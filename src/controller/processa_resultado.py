@@ -1,44 +1,36 @@
-from src.domain.operation import Operation, Portfolio
+from test.domain.operation_test import OperationProfitTest
+from src.domain.operation import Asset, OperationData, SellOperationProfit, Portfolio, PortfolioManager
+import pandas as pd
 
+OPERATION_COLUMN = 'operação' 
+SPLIT_COLUMN = 'split'
+TICKER_COLUMN = 'ticker'
+QUANTITY_COLUMN = 'qtd'
+MEAN_PRICE_COLUMN = 'pm'
 
-class Factory:
-    
-    def sell(self, row):
-        return Operation(row['qtd venda'], row['pm venda'])
-
-    def buy(self, row):
-        return Operation(row['qtd compra'], row['pm compra'])
-
-        
 
 class Result:
 
+    def __init__(self, df:pd.DataFrame) -> None:
+        self.__df = df.copy()
+        self.__portfolio_mg :PortfolioManager = PortfolioManager()
 
-    def process_operations(self, df):
-        portfolio = Portfolio()
-        for index, row in df.iterrows():
-            ativo = self.asset(row['ticker'], portfolio)
-            
-            
-            operacao_lucro = 0
+    def process_operations(self):
+        for index, row in  self.__df.iterrows():
+            self.__current_row = row
+            operation = self.__current_operation()
+            profit_value = self.__portfolio_mg.execute_operation(row[OPERATION_COLUMN], operation)
+            self.__update_table(index, profit_value)
 
-            if row['operação'] in ['COMPRADA', 'SUBSCRICAO', 'BONIFICACAO']:
-                operacao = Factory().buy(row)
-                ativo.compra(operacao)
-            elif row['operação'] == 'VENDIDA':
-                venda = Factory().sell(row)
-                ativo.vende(venda)
-                operacao_pm = resultado.pm()
-                operacao_lucro = (operacao_pm - ativo.pm) * (resultado.delta_quantidade * -1)
-                
-            elif row['operação'] == 'ZERADA':
-                pass        
-            elif row['operação'] == 'SPLIT':
-                try:
-                    ativo.split(row['split'])
-                except:
-                    print(index, row['data'])
-                    
-            ativo.lucro += operacao_lucro
-            atualiza_tabela(df, ativo, index, operacao_lucro)
-        return df
+    def __current_asset(self):
+        self.__portfolio_mg.asset(self.__current_row[TICKER_COLUMN])
+    
+    def __current_operation(self)-> OperationData:
+        return OperationData(self.__current_row[QUANTITY_COLUMN], self.__current_row[MEAN_PRICE_COLUMN])
+
+    def __update_table(self, index, profit):
+        self.__df.loc[index, 'lucro'] = profit
+        self.__df.loc[index, 'total acumulado'] = self.__current_asset.value()
+        self.__df.loc[index, 'qtd acumulado'] = self.__current_asset.quantity()
+        self.__df.loc[index, 'pm acumulado'] = self.__current_asset.mean_price()
+        self.__df.loc[index, 'lucro acumulado'] = self.__current_asset.profit()

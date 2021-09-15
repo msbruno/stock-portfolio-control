@@ -1,9 +1,9 @@
-from src.domain.operation import Operation
+from src.domain.operation import OperationData 
 
 
 class ResultEntry:
 
-    def __init__(self, buy_operation:Operation, sell_operation:Operation):
+    def __init__(self, buy_operation:OperationData, sell_operation:OperationData):
         self.__buy_operation = buy_operation
         self.__sell_operation = sell_operation
         self.__position_type = ""
@@ -12,7 +12,7 @@ class ResultEntry:
         return self.__buy_operation.volume() - self.__sell_operation.volume() 
     
     def delta_quantity(self)->int:
-        return self.__buy_operation.quantity() - self.__sell_operation.quantity()
+        return self.__buy_operation.shares() - self.__sell_operation.shares()
 
     def mean_price(self)->float:
         result = 0

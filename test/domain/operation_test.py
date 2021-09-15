@@ -1,61 +1,37 @@
-from src.domain.operation import Asset, Operation, Portfolio, SellOperationProfit
+from src.domain.operation import SellOperationProfit, SellOperation
+from src.domain.asset import Asset
 import unittest
-
-
-class OpeationTest(unittest.TestCase):
-    
-    def test_should_calculate_total(self):
-        quantity:int = 100
-        price:int = 10
-        buy_operation:Operation = Operation(quantity, price)
-        self.assertEquals(1000, buy_operation.volume()) 
-
-class OperationProfitTest(unittest.TestCase):
-    def test_should_calculate_loss(self):
-        sell_operation:Operation = Operation(10, 25)
-        operation_profit = SellOperationProfit(50, sell_operation)
-        self.assertEqual(-250, operation_profit.value())
 
 class AssetTest(unittest.TestCase):
 
-    def test_should_split_correctly(self):
+    def test_should_be_create_correctly(self):
         asset = Asset("TAEE11", 20, 10)
-        asset.split(5)
-        self.assertEquals(100, asset.quantity())
-    
+        self.assertEquals(20, asset.shares())
+        self.assertEqual(200, asset.value())
+
+class SellOperationTest(unittest.TestCase):
     def test_should_sell_correctly(self):
         asset = Asset("TAEE11", 30, 10.0)
-        asset.sell(Operation(0,0))
-        self.assertEquals(30, asset.quantity())
+        sell_operation = SellOperation(0,0) 
+        sell_operation.execute_on(asset) 
+        self.assertEquals(30, asset.shares())
         self.assertEquals(10.0, asset.mean_price())
 
-        asset.sell(Operation(10,5))
-        self.assertEquals(20, asset.quantity())
+        sell_operation = SellOperation(10,5) 
+        sell_operation.execute_on(asset)
+        self.assertEquals(20, asset.shares())
         self.assertEquals(10.0, asset.mean_price())
         self.assertEquals(-50.0, asset.profit())
 
+    def test_should_raise_exception_when_try_to_sell_more_shares_than_have(self):
+        asset = Asset("TAEE11", 30, 10.0)
+        sell_operation = SellOperation(50,1) 
+        with self.assertRaises(Exception) as context:
+            sell_operation.execute_on(asset)
+        self.assertTrue("You are trying to sell more TAEE11 than you have." in str(context.exception))
+
+class OperationProfitTest(unittest.TestCase):
     def test_should_calculate_loss(self):
-        asset = Asset("TAEE11", 10, 50)
-        sell_operation:Operation = Operation(10, 25)
-        operation_profit = asset.sell(sell_operation)
+        asset = Asset("TAEE11", 30, 20.0)
+        operation_profit = SellOperationProfit(asset, 25, 10) 
         self.assertEqual(-250, operation_profit.value())
-
-
-    def test_should_buy_correctly(self):
-        asset = Asset("TAEE11", 30, 10)
-        asset.buy(Operation(0,0))
-        self.assertEquals(30, asset.quantity())
-
-        asset.buy(Operation(20,5))
-        self.assertEquals(50, asset.quantity())
-        self.assertEquals(8.0, asset.mean_price())
-        self.assertEquals(0, asset.profit())
-
-class PortfolioTest(unittest.TestCase):
-
-    def test_should_add_asset(self):
-        asset = Asset("TAEE11", 20, 10)
-        portfolio = Portfolio()
-        portfolio.add(asset)
-
-        self.assertEqual(asset, portfolio.get("TAEE11"))

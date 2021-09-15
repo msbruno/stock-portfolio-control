@@ -1,79 +1,65 @@
 
-class Operation: 
+import abc
+from src.domain.asset import Asset
+
+
     
-    def __init__(self, quantity:int, price:int, ):
-        self.__mean_price = price
-        self.__quantity = quantity
-        self.__volume = self.__mean_price * self.__quantity
+'''def sell(self, operation: OperationData)-> OperationProfit:
+
+    if operation.quantity() > self.__quantity:
+        raise Exception("You are trying to sell more {} than you have.".format(self.ticker()))
+    operation_profit = OperationProfit(self.mean_price(), operation)
+    self.__profit += operation_profit.value()
+    self.__quantity -= operation.quantity() 
+    self.__value = self.quantity() * self.mean_price()
+    return operation_profit
     
-    def volume(self)->float:
-        return self.__volume
-
-    def type(self):
-        return self.__operation_type  
+def buy(self, operation: OperationData):
+    self.__quantity += operation.quantity()
+    self.__value += operation.volume()
+    self.__mean_price = self.__value / self.__quantity
+    return self.__no_operation_profit()
     
-    def quantity(self)->int:
-        return self.__quantity
+def split(self, operation: OperationData):
+    self.__quantity = self.__quantity * operation.quantity()
+    self.__mean_price = self.__value / self.__quantity
+    return self.__no_operation_profit()'''
 
-    def mean_price(self)->float:
-        return self.__mean_price
+from enum import Enum
 
-class SellOperationProfit:
+class OperationProfit(abc.ABC):
+    @abc.abstractmethod
+    def value(self):
+        pass
 
-    def __init__(self, mean_price:float, operation:Operation) -> None:
-        self.__mean_price = mean_price
-        self.__operation = operation
+class SellOperationProfit(OperationProfit):
+
+    def __init__(self, asset:Asset, shares:int=0, mean_price:float =0):
+        self._asset:Asset = asset
+        self._shares = shares
+        self._mean_price = mean_price
     
     def value(self):
-        return (self.__operation.mean_price() - self.__mean_price) * self.__operation.quantity()
+        if self._shares == 0:
+            return 0
+        return (self._mean_price - self._asset.mean_price()) * self._shares
 
-class Asset:
-    def __init__(self, ticker:str, quantity=0, mean_price =0, ):
-        self.__ticker = ticker
-        self.__mean_price = mean_price
-        self.__quantity = quantity
-        self.__value  = self.__mean_price * self.__quantity
-        self.__profit = 0
+
+class Operation(metaclass=abc.ABCMeta):
+
+    @abc.abstractmethod 
+    def execute_on(self, asset:Asset)->OperationProfit:
+        pass
+
+class SellOperation(Operation):
+
+    def __init__(self, shares:int, mean_price:float):
+        self._shares = shares
+        self._mean_price = mean_price
     
-    def sell(self, operation: Operation)-> SellOperationProfit:
-        
-        if operation.quantity() > self.__quantity:
-            raise Exception("You are trying to sell more {} than you have.".format(self.ticker()))
-        operation_profit = SellOperationProfit(self.mean_price(), operation)
-        self.__quantity -= operation.quantity() 
-        self.__profit += operation_profit.value()
-        self.__value = self.quantity() * self.mean_price()
+    def execute_on(self, asset:Asset)->SellOperationProfit:
+        operation_profit = SellOperationProfit(asset, self._shares, self._mean_price)
+        asset.add_profit(operation_profit.value())
+        asset.reduce_shares(self._shares) 
         return operation_profit
-        
-    def buy(self, operation: Operation):
-        self.__quantity += operation.quantity()
-        self.__value += operation.quantity() * operation.mean_price()
-        self.__mean_price = self.__value / self.__quantity
-        
-    def split(self, split_amount):
-        self.__quantity = self.__quantity * split_amount
-        self.__mean_price = self.__value / self.__quantity
-
-    def ticker(self)->str:
-        return self.__ticker
-
-    def mean_price(self)->float:
-        return self.__mean_price
-
-    def quantity(self)->int:
-        return self.__quantity
-    
-    def profit(self)->float:
-        return self.__profit
-
-class Portfolio:
-    def __init__(self):
-        self.assets: dict = {}
-    
-    def add(self, asset: Asset):
-        self.assets[asset.ticker()] = asset
-    
-    def has(self, ticker:str):
-        return ticker in self.assets
-
      
