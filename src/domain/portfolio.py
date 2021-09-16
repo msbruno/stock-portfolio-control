@@ -10,5 +10,5 @@ class Portfolio:
     def has(self, ticker:str):
         return ticker in self.assets
     
-    def get(self, ticker:str):
+    def get(self, ticker:str)-> Asset:
         return self.assets[ticker] 

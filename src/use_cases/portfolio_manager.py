@@ -1,6 +1,6 @@
 from enum import Enum
 from src.domain.asset import Asset
-from src.domain.operation import OperationProfit
+from src.domain.operation import BuyOperation, Operation, OperationProfit, SellOperation, SplitOperation
 from src.domain.portfolio import Portfolio
 
 class OperationType(Enum):
@@ -28,27 +28,39 @@ class OperationData:
 
     def operation(self)->OperationType: 
         return self._operation
-        
 
 BUY_OPERATIONS = [OperationType.BUY, OperationType.SUBSCRIPTION, OperationType.BONUS]
 SELL_OPERATION = OperationType.SELL
 SPLIT_OPERATION = OperationType.SPLIT
 
+'''operations = {
+    OperationType.BUY: BuyOperation
+    OperationType.SUBSCRIPTION, 
+    OperationType.BONUS
+} '''
+
+class OperationFactory:
+
+    def make(self, data: OperationData):
+        if data.operation() in BUY_OPERATIONS:
+            return BuyOperation(data.shares(), data.volume())
+        elif data.operation() == SELL_OPERATION:
+            return SellOperation(data.shares(), data.volume())
+        elif data.operation() == SPLIT_OPERATION:
+            return SplitOperation(data.shares)
+        raise Exception("Operation not allowed.")
+
+
 class PortfolioManager:
 
     def __init__(self, portfolio:Portfolio) -> None:
         self.__portfolio = portfolio
+        self.__operation_factory = OperationFactory()
 
     def execute_operation(self, ticker:str, operation_data:OperationData)-> OperationProfit:
         asset = self.asset(ticker)
-
-        if operation_data.operation() in BUY_OPERATIONS:
-            operation_profit = asset.buy(operation_data)
-        elif operation_data.operation() == SELL_OPERATION:
-            operation_profit = asset.sell(operation_data)
-        elif operation_data.operation() == SPLIT_OPERATION:
-            operation_profit = asset.split(operation_data.shares)
-        return operation_profit
+        operation = self.__operation_factory.make(operation_data)
+        return operation.execute_on(asset)
 
     def asset(self, ticker)->Asset:
         if not self.__portfolio.has(ticker):

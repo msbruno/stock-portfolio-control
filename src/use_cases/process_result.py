@@ -8,6 +8,8 @@ TICKER_COLUMN = 'ticker'
 QUANTITY_COLUMN = 'qtd'
 MEAN_PRICE_COLUMN = 'pm'
 
+class DataFrame:
+    pass
 
 class Result:
 
