@@ -1,5 +1,5 @@
-from src.controller.result_entry import ResultEntry
-from src.domain.operation import OperationData
+from src.use_cases.result_entry import ResultEntry
+from src.use_cases.portfolio_manager import OperationData
 import unittest 
 
 class ResultTest(unittest.TestCase):

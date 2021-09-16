@@ -1,6 +1,6 @@
 from enum import Enum
 from src.domain.asset import Asset
-from src.domain.operation import BuyOperation, Operation, OperationProfit, SellOperation, SplitOperation
+from src.domain.operation import BuyOperation, OperationProfit, SellOperation, SplitOperation
 from src.domain.portfolio import Portfolio
 
 class OperationType(Enum):
