@@ -45,7 +45,7 @@ class SellOperation(Operation):
         self._shares = shares
         self._value = value
     
-    def execute_on(self, asset:Asset)->SellOperationProfit:
+    def execute_on(self, asset:Asset)->OperationProfit:
         result = SellOperationProfit(asset, self._shares, self._value)
         asset.add_profit(result.value())
         asset.reduce_value(self.amount_to_reduce(asset))
@@ -60,8 +60,16 @@ class BuyOperation(Operation):
         self._shares = shares
         self._value = value
  
-    def execute_on(self, asset:Asset)->SellOperationProfit:
+    def execute_on(self, asset:Asset)->OperationProfit:
         asset.add_shares(self._shares)
         asset.add_value(self._value) 
         return NoOperationProfit()       
-    
+
+class SplitOperation(Operation):
+    def __init__(self, shares:int):
+        self._shares = shares
+
+    def execute_on(self, asset:Asset)->OperationProfit:
+        shares_after_split = asset.shares() * self._shares
+        total_shares_to_add = shares_after_split - asset.shares()
+        asset.add_shares(total_shares_to_add )

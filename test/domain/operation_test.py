@@ -1,4 +1,4 @@
-from src.domain.operation import BuyOperation, SellOperationProfit, SellOperation
+from src.domain.operation import BuyOperation, SellOperationProfit, SellOperation,SplitOperation
 from src.domain.asset import Asset
 import unittest
 
@@ -39,3 +39,12 @@ class BuyOperationTest(unittest.TestCase):
         self.assertEquals(60, asset.shares())
         self.assertEquals(12000, asset.value())
         self.assertEquals(200.0, asset.mean_price())
+
+class SplitOperationTest(unittest.TestCase):
+    
+    def test_should_split_correctly(self):
+        asset = Asset("TAEE11", 30, 30000.0)
+        split_operation = SplitOperation(2)
+        split_operation.execute_on(asset)
+        self.assertEqual(60, asset.shares())
+        self.assertEqual(30000.0, asset.value())
