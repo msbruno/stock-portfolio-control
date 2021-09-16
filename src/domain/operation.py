@@ -4,26 +4,10 @@ from src.domain.asset import Asset
     
 '''def sell(self, operation: OperationData)-> OperationProfit:
 
-    if operation.quantity() > self.__quantity:
-        raise Exception("You are trying to sell more {} than you have.".format(self.ticker()))
-    operation_profit = OperationProfit(self.mean_price(), operation)
-    self.__profit += operation_profit.value()
-    self.__quantity -= operation.quantity() 
-    self.__value = self.quantity() * self.mean_price()
-    return operation_profit
-    
-def buy(self, operation: OperationData):
-    self.__quantity += operation.quantity()
-    self.__value += operation.volume()
-    self.__mean_price = self.__value / self.__quantity
-    return self.__no_operation_profit()
-    
 def split(self, operation: OperationData):
     self.__quantity = self.__quantity * operation.quantity()
     self.__mean_price = self.__value / self.__quantity
     return self.__no_operation_profit()'''
-
-from enum import Enum
 
 class OperationProfit(abc.ABC):
     @abc.abstractmethod
