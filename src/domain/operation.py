@@ -66,10 +66,19 @@ class BuyOperation(Operation):
         return NoOperationProfit()       
 
 class SplitOperation(Operation):
-    def __init__(self, shares:int):
-        self._shares = shares
+    def __init__(self, amount:int):
+        self._split_amount = amount
 
     def execute_on(self, asset:Asset)->OperationProfit:
-        shares_after_split = asset.shares() * self._shares
+        shares_after_split = asset.shares() * self._split_amount
+        total_shares_to_add = shares_after_split - asset.shares()
+        asset.add_shares(total_shares_to_add )
+
+class ReverseSplitOperation(Operation):
+    def __init__(self, amount:int):
+        self._split_amount = amount
+
+    def execute_on(self, asset:Asset)->OperationProfit:
+        shares_after_split = asset.shares() / self._split_amount
         total_shares_to_add = shares_after_split - asset.shares()
         asset.add_shares(total_shares_to_add )

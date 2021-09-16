@@ -1,4 +1,4 @@
-from src.domain.operation import BuyOperation, SellOperationProfit, SellOperation,SplitOperation
+from src.domain.operation import BuyOperation, ReverseSplitOperation, SellOperationProfit, SellOperation,SplitOperation
 from src.domain.asset import Asset
 import unittest
 
@@ -47,4 +47,13 @@ class SplitOperationTest(unittest.TestCase):
         split_operation = SplitOperation(2)
         split_operation.execute_on(asset)
         self.assertEqual(60, asset.shares())
+        self.assertEqual(30000.0, asset.value())
+        self.assertEqual(30000.0, asset.mean_price())
+
+class ReverseSplitOperationTest(unittest.TestCase):
+    def test_should_group_corretly(self):
+        asset = Asset("TAEE11", 30, 30000.0)
+        split_operation = ReverseSplitOperation(2)
+        split_operation.execute_on(asset)
+        self.assertEqual(15, asset.shares())
         self.assertEqual(30000.0, asset.value())
