@@ -2,13 +2,7 @@
 import abc
 from src.domain.asset import Asset
     
-'''def sell(self, operation: OperationData)-> OperationProfit:
-
-def split(self, operation: OperationData):
-    self.__quantity = self.__quantity * operation.quantity()
-    self.__mean_price = self.__value / self.__quantity
-    return self.__no_operation_profit()'''
-
+    
 class OperationProfit(abc.ABC):
     @abc.abstractmethod
     def value(self):
