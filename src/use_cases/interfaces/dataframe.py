@@ -12,6 +12,11 @@ class DataFrame(abc.ABC):
    
 
 class DataFrameRow(abc.ABC):
+
+    @abc.abstractmethod
+    def index(self):
+        pass
+
     @abc.abstractmethod
     def data(self):
         pass

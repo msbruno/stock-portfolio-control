@@ -54,15 +54,15 @@ class OperationFactory:
 class PortfolioManager:
 
     def __init__(self, portfolio:Portfolio) -> None:
-        self.__portfolio = portfolio
-        self.__operation_factory = OperationFactory()
+        self._portfolio = portfolio
+        self._operation_factory = OperationFactory()
 
     def execute_operation(self, ticker:str, operation_data:OperationData)-> OperationProfit:
         asset = self.asset(ticker)
-        operation = self.__operation_factory.make(operation_data)
+        operation = self._operation_factory.make(operation_data)
         return operation.execute_on(asset)
 
     def asset(self, ticker)->Asset:
-        if not self.__portfolio.has(ticker):
-            self.__portfolio.add(Asset(ticker))
-        return self.__portfolio.get(ticker)
+        if not self._portfolio.has(ticker):
+            self._portfolio.add(Asset(ticker))
+        return self._portfolio.get(ticker)
