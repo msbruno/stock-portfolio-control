@@ -6,7 +6,7 @@ import pandas as pd
 
 class RowDataFramePandasTest(unittest.TestCase):
 
-    def test_should_create_(self):
+    def test_should_create_correctly(self):
         data = ['NET', 'COMPRA', '10/10/2020', 1, 100]
         row = self._create_row(data)
 
