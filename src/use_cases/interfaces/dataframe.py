@@ -3,7 +3,7 @@ import abc
 class DataFrame(abc.ABC):
 
     @abc.abstractmethod
-    def next_row(self):
+    def __next__(self):
         pass
 
     @abc.abstractmethod

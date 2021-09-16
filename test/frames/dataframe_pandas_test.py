@@ -27,22 +27,38 @@ class RowDataFramePandasTest(unittest.TestCase):
 
 class DataFramePandasTest(unittest.TestCase):
 
+    def test_should_be_iterable(self):
+        columns = ['ticker', 'operação', 'data', 'qtd', 'pm']
+        data = [['NET', 'COMPRA', '10/10/2020', 1, 100], 
+                ['NET', 'COMPRA', '10/10/2020', 1, 300], 
+        ]
+        df = pd.DataFrame(data=data, columns=columns)
+        factory = FactoryRowDataFramePandas()
+        sut = DataFramePandas(df, factory)
+
+        for x in sut:
+            pass
+
     def test_should_create_correctly(self):
 
         columns = ['ticker', 'operação', 'data', 'qtd', 'pm']
         data = [['NET', 'COMPRA', '10/10/2020', 1, 100], 
                 ['NET', 'COMPRA', '10/10/2020', 1, 300], 
-                ['NET', 'COMPRA', '10/10/2020', 1, 150], 
         ]
         df = pd.DataFrame(data=data, columns=columns)
         factory = FactoryRowDataFramePandas()
         sut = DataFramePandas(df, factory)
-        row = sut.next_row()
 
+        row = next(sut)
         self.assertEqual('NET', row.ticker())
         self.assertEqual('COMPRA', row.operation())
         self.assertEqual('10/10/2020', row.data())
         self.assertEqual(1, row.quantity())
         self.assertEqual(100, row.mean_price())
         
-        pass
+        row = next(sut)
+        self.assertEqual('NET', row.ticker())
+        self.assertEqual('COMPRA', row.operation())
+        self.assertEqual('10/10/2020', row.data())
+        self.assertEqual(1, row.quantity())
+        self.assertEqual(300, row.mean_price())

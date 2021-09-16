@@ -60,8 +60,11 @@ class DataFramePandas(DataFrame):
         self._row_iterator:Iterable = None
         self._current_row = None
         self._current_index = None
+    
+    def __iter__(self):
+        return self
 
-    def next_row(self)->DataFrameRow:
+    def __next__(self)->DataFrameRow:
         self._current_index, self._current_row = next(self._get_row_iterator())
         return self._row_factory.create(self._current_index, self._current_row)
     
