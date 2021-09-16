@@ -48,7 +48,7 @@ class SplitOperationTest(unittest.TestCase):
         split_operation.execute_on(asset)
         self.assertEqual(60, asset.shares())
         self.assertEqual(30000.0, asset.value())
-        self.assertEqual(30000.0, asset.mean_price())
+        self.assertEqual(500.0, asset.mean_price())
 
 class ReverseSplitOperationTest(unittest.TestCase):
     def test_should_group_corretly(self):
@@ -57,3 +57,4 @@ class ReverseSplitOperationTest(unittest.TestCase):
         split_operation.execute_on(asset)
         self.assertEqual(15, asset.shares())
         self.assertEqual(30000.0, asset.value())
+        self.assertEqual(2000.0, asset.mean_price())
