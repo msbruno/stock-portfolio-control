@@ -1,6 +1,7 @@
+from src.main.mappers import COLUMN_MAPPER, OPERATION_MAPPER
 from src.use_cases.portfolio_manager import OperationType
 from src.use_cases.interfaces.dataframe import DataFrameRow
-from src.external.dataframe_pandas import DataFramePandas, FactoryRowDataFramePandas
+from src.external.dataframe.dataframe_pandas import DataFramePandas, FactoryRowDataFramePandas
 import unittest
 import pandas as pd
 
@@ -11,7 +12,7 @@ class FactoryRowDataFramePandasTest(unittest.TestCase):
         data = ['NET', 'COMPRA', '10/10/2020', 1, 100]
         row = self._create_row(data)
 
-        sut = FactoryRowDataFramePandas()
+        sut = FactoryRowDataFramePandas(OPERATION_MAPPER, COLUMN_MAPPER)
         row:DataFrameRow = sut.create(1, row)
         self.assertEqual('NET', row.ticker())
         self.assertEqual(OperationType.BUY, row.operation())
@@ -34,7 +35,7 @@ class DataFramePandasTest(unittest.TestCase):
                 ['NET', 'COMPRA', '10/10/2020', 1, 300], 
         ]
         df = pd.DataFrame(data=data, columns=columns)
-        factory = FactoryRowDataFramePandas()
+        factory = FactoryRowDataFramePandas(OPERATION_MAPPER, COLUMN_MAPPER)
         sut = DataFramePandas(df, factory)
 
         for x in sut:
@@ -47,7 +48,7 @@ class DataFramePandasTest(unittest.TestCase):
                 ['NET', 'VENDA', '10/10/2020', 1, 300], 
         ]
         df = pd.DataFrame(data=data, columns=columns)
-        factory = FactoryRowDataFramePandas()
+        factory = FactoryRowDataFramePandas(OPERATION_MAPPER, COLUMN_MAPPER)
         sut = DataFramePandas(df, factory)
 
         row = next(sut)

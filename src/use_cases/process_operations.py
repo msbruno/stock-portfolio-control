@@ -1,16 +1,16 @@
-from src.domain.asset import Asset
 from typing import Any
+from src.use_cases.interfaces.dataframe import DataFrame
+from src.domain.asset import Asset
 from src.domain.portfolio import Portfolio
-from src.external.dataframe_pandas import DataFramePandas
 from src.use_cases.portfolio_manager import OperationData, PortfolioManager
 
 class ProcessOperation:
 
-    def __init__(self, df:DataFramePandas) -> None:
-        self._df:DataFramePandas = df
+    def __init__(self, df:DataFrame) -> None:
+        self._df:DataFrame = df
         self._portfolio_mg :PortfolioManager = PortfolioManager(Portfolio())
 
-    def process_operations(self)->DataFramePandas:
+    def process_operations(self)->DataFrame:
         for row in self._df:
             self._current_row = row
             operation = self.__current_operation()

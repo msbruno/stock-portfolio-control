@@ -33,37 +33,20 @@ class DataFrameRowPandas(DataFrameRow):
     def operation(self):
         return self._operation
 
-
-DATA_COLUMN = 'data'
-TICKER_COLUMN = 'ticker'
-OPERATION_COLUMN = 'operação' 
-QUANTITY_COLUMN = 'qtd'
-MEAN_PRICE_COLUMN = 'pm'
-
-CONVERSOR_ENUM = {
-    'COMPRA': OperationType.BUY,
-    'VENDA': OperationType.SELL,
-    'SPLIT': OperationType.SPLIT,
-    'AGRUPAMENTO': OperationType.REVERSE_SPLIT,
-    'SUBSCRICAO': OperationType.SUBSCRIPTION,
-    'BONIFICACAO': OperationType.BONUS,
-}
-
 class FactoryRowDataFramePandas:
 
-    def __init__(self) -> None:
-        self._operation_conversor = CONVERSOR_ENUM
-        #self._column_conversor = 
+    def __init__(self, operation_mapper:dict, column_mapper:dict) -> None:
+        self._operation_mapper = operation_mapper
+        self._column_mapper = column_mapper
 
     def create(self, index, row: pandas.Series)-> DataFrameRow:
         return DataFrameRowPandas(index,
-            row[DATA_COLUMN],
-            row[TICKER_COLUMN],
-            self._operation_conversor[row[OPERATION_COLUMN]],
-            row[QUANTITY_COLUMN],
-            row[MEAN_PRICE_COLUMN]
+            row[self._column_mapper['DATA_COLUMN']],
+            row[self._column_mapper['TICKER_COLUMN']],
+            self._operation_mapper[row[self._column_mapper['OPERATION_COLUMN']]],
+            row[self._column_mapper['QUANTITY_COLUMN']],
+            row[self._column_mapper['MEAN_PRICE_COLUMN']]
         )
-
 
 class DataFramePandas(DataFrame):
     
