@@ -1,6 +1,8 @@
+from src.domain.asset import Asset
+from typing import Any
 from src.domain.portfolio import Portfolio
-from src.frames.dataframe_pandas import DataFramePandas
-from src.use_cases.portfolio_manager import OperationData, OperationType, PortfolioManager
+from src.external.dataframe_pandas import DataFramePandas
+from src.use_cases.portfolio_manager import OperationData, PortfolioManager
 
 class ProcessOperation:
 
@@ -8,29 +10,30 @@ class ProcessOperation:
         self._df:DataFramePandas = df
         self._portfolio_mg :PortfolioManager = PortfolioManager(Portfolio())
 
-    def process_operations(self):
+    def process_operations(self)->DataFramePandas:
         for row in self._df:
             self._current_row = row
             operation = self.__current_operation()
-            profit_value = self._portfolio_mg.execute_operation(row.ticker(), operation)
-            #self._df.update(row, profit_value)
+            profit = self._portfolio_mg.execute_operation(row.ticker(), operation)
+            self.__update_dataframe(row.index(), profit.value())
+        return self.df()
 
     def df(self):
-        return self._df
+        return self._df.copy()
     
     def portfolio_mg(self):
         return self._portfolio_mg
 
-    def __current_asset(self):
-        self._portfolio_mg.asset(self._current_row.ticker())
+    def _current_asset(self)-> Asset:
+        return self._portfolio_mg.asset(self._current_row.ticker())
     
     def __current_operation(self)-> OperationData:
         row = self._current_row
         return OperationData(row.shares(), row.mean_price(), row.operation())
 
-    def __update_table(self, index, profit):
-        self._df.loc[index, 'lucro'] = profit
-        self._df.loc[index, 'total acumulado'] = self.__current_asset.value()
-        self._df.loc[index, 'qtd acumulado'] = self.__current_asset.quantity()
-        self._df.loc[index, 'pm acumulado'] = self.__current_asset.mean_price()
-        self._df.loc[index, 'lucro acumulado'] = self.__current_asset.profit()
+    def __update_dataframe(self, index:Any, profit:float):
+        self._df.update(index, 'lucro', profit)
+        self._df.update(index, 'total acumulado', self._current_asset().value())
+        self._df.update(index, 'qtd acumulado', self._current_asset().shares())
+        self._df.update(index, 'pm acumulado', self._current_asset().mean_price())
+        self._df.update(index, 'lucro acumulado', self._current_asset().profit())

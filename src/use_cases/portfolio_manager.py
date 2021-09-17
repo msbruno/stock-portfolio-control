@@ -11,7 +11,6 @@ class OperationType(Enum):
     SUBSCRIPTION = 'SUBSCRIPTION'
     BONUS = 'BONUS'
 
-
 class OperationData:  
     
     def __init__(self, shares:int, mean_price:float, operation:OperationType):
@@ -35,11 +34,6 @@ BUY_OPERATIONS = [OperationType.BUY, OperationType.SUBSCRIPTION, OperationType.B
 SELL_OPERATION = OperationType.SELL
 SPLIT_OPERATION = OperationType.SPLIT
 
-'''operations = {
-    OperationType.BUY: BuyOperation
-    OperationType.SUBSCRIPTION, 
-    OperationType.BONUS
-} '''
 
 class OperationFactory:
 

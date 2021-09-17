@@ -1,6 +1,6 @@
 from src.use_cases.portfolio_manager import OperationType
 from src.use_cases.interfaces.dataframe import DataFrameRow
-from src.frames.dataframe_pandas import DataFramePandas, FactoryRowDataFramePandas
+from src.external.dataframe_pandas import DataFramePandas, FactoryRowDataFramePandas
 import unittest
 import pandas as pd
 

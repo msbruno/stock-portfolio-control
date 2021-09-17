@@ -1,7 +1,7 @@
 
 from datetime import datetime
 from src.use_cases.portfolio_manager import OperationType
-from typing import Iterable
+from typing import Any, Iterable
 import pandas
 from src.use_cases.interfaces.dataframe import DataFrame, DataFrameRow
 
@@ -51,11 +51,15 @@ CONVERSOR_ENUM = {
 
 class FactoryRowDataFramePandas:
 
+    def __init__(self) -> None:
+        self._operation_conversor = CONVERSOR_ENUM
+        #self._column_conversor = 
+
     def create(self, index, row: pandas.Series)-> DataFrameRow:
         return DataFrameRowPandas(index,
             row[DATA_COLUMN],
             row[TICKER_COLUMN],
-            CONVERSOR_ENUM[row[OPERATION_COLUMN]],
+            self._operation_conversor[row[OPERATION_COLUMN]],
             row[QUANTITY_COLUMN],
             row[MEAN_PRICE_COLUMN]
         )
@@ -84,3 +88,10 @@ class DataFramePandas(DataFrame):
 
     def current_row(self):
         return self.current_row
+
+    def update(self, index: Any, column:str, value: Any):
+        self._df.loc[index, column] = value
+
+    def copy(self):
+        return DataFramePandas(self._df.copy(), self._row_factory)
+
