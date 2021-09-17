@@ -1,5 +1,6 @@
 
 from datetime import datetime
+from src.use_cases.portfolio_manager import OperationType
 from typing import Iterable
 import pandas
 from src.use_cases.interfaces.dataframe import DataFrame, DataFrameRow
@@ -23,7 +24,7 @@ class DataFrameRowPandas(DataFrameRow):
     def ticker(self):
         return self._ticker
 
-    def quantity(self):
+    def shares(self):
         return self._quantity
 
     def mean_price(self):
@@ -39,14 +40,22 @@ OPERATION_COLUMN = 'operação'
 QUANTITY_COLUMN = 'qtd'
 MEAN_PRICE_COLUMN = 'pm'
 
+CONVERSOR_ENUM = {
+    'COMPRA': OperationType.BUY,
+    'VENDA': OperationType.SELL,
+    'SPLIT': OperationType.SPLIT,
+    'AGRUPAMENTO': OperationType.REVERSE_SPLIT,
+    'SUBSCRICAO': OperationType.SUBSCRIPTION,
+    'BONIFICACAO': OperationType.BONUS,
+}
+
 class FactoryRowDataFramePandas:
 
     def create(self, index, row: pandas.Series)-> DataFrameRow:
-        return DataFrameRowPandas(
-            index,
+        return DataFrameRowPandas(index,
             row[DATA_COLUMN],
             row[TICKER_COLUMN],
-            row[OPERATION_COLUMN],
+            CONVERSOR_ENUM[row[OPERATION_COLUMN]],
             row[QUANTITY_COLUMN],
             row[MEAN_PRICE_COLUMN]
         )

@@ -1,8 +1,6 @@
 from src.domain.portfolio import Portfolio
 from src.frames.dataframe_pandas import DataFramePandas
-from src.use_cases.portfolio_manager import OperationData, PortfolioManager
-import pandas as pd
-
+from src.use_cases.portfolio_manager import OperationData, OperationType, PortfolioManager
 
 class ProcessOperation:
 
@@ -14,8 +12,8 @@ class ProcessOperation:
         for row in self._df:
             self._current_row = row
             operation = self.__current_operation()
-            profit_value = self._portfolio_mg.execute_operation(row.operation(), operation)
-            self.__update_table(row.index(), profit_value)
+            profit_value = self._portfolio_mg.execute_operation(row.ticker(), operation)
+            #self._df.update(row, profit_value)
 
     def df(self):
         return self._df
@@ -27,7 +25,8 @@ class ProcessOperation:
         self._portfolio_mg.asset(self._current_row.ticker())
     
     def __current_operation(self)-> OperationData:
-        return OperationData(self._current_row.quantity(), self._current_row.mean_price())
+        row = self._current_row
+        return OperationData(row.shares(), row.mean_price(), row.operation())
 
     def __update_table(self, index, profit):
         self._df.loc[index, 'lucro'] = profit

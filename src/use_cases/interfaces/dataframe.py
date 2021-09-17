@@ -26,7 +26,7 @@ class DataFrameRow(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def quantity(self):
+    def shares(self):
         pass
     
     @abc.abstractmethod

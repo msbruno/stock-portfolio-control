@@ -4,16 +4,18 @@ from src.domain.operation import BuyOperation, OperationProfit, SellOperation, S
 from src.domain.portfolio import Portfolio
 
 class OperationType(Enum):
-    SELL = 'COMPRA'
-    BUY = 'VENDA'
+    SELL = 'SELL'
+    BUY = 'BUY'
     SPLIT = 'SPLIT'
-    SUBSCRIPTION = 'SUBSCRICAO'
-    BONUS = 'BONIFICACAO'
+    REVERSE_SPLIT = 'REVERSE_SPLIT'
+    SUBSCRIPTION = 'SUBSCRIPTION'
+    BONUS = 'BONUS'
+
 
 class OperationData:  
     
-    def __init__(self, shares:int, price:int, operation:OperationType):
-        self._mean_price = price
+    def __init__(self, shares:int, mean_price:float, operation:OperationType):
+        self._mean_price = mean_price
         self._share = shares
         self._operation = operation
      

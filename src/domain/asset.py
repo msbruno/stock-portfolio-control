@@ -9,6 +9,8 @@ class Asset:
         return self._ticker
 
     def mean_price(self)->float:
+        if self._shares == 0:
+            return 0
         return self._value / self._shares
 
     def shares(self)->int:

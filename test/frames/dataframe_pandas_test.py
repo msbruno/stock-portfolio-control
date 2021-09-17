@@ -1,3 +1,4 @@
+from src.use_cases.portfolio_manager import OperationType
 from src.use_cases.interfaces.dataframe import DataFrameRow
 from src.frames.dataframe_pandas import DataFramePandas, FactoryRowDataFramePandas
 import unittest
@@ -13,9 +14,9 @@ class FactoryRowDataFramePandasTest(unittest.TestCase):
         sut = FactoryRowDataFramePandas()
         row:DataFrameRow = sut.create(1, row)
         self.assertEqual('NET', row.ticker())
-        self.assertEqual('COMPRA', row.operation())
+        self.assertEqual(OperationType.BUY, row.operation())
         self.assertEqual('10/10/2020', row.data())
-        self.assertEqual(1, row.quantity())
+        self.assertEqual(1, row.shares())
         self.assertEqual(100, row.mean_price())
 
     def _create_row(self, data):
@@ -43,7 +44,7 @@ class DataFramePandasTest(unittest.TestCase):
 
         columns = ['ticker', 'operação', 'data', 'qtd', 'pm']
         data = [['NET', 'COMPRA', '10/10/2020', 1, 100], 
-                ['NET', 'COMPRA', '10/10/2020', 1, 300], 
+                ['NET', 'VENDA', '10/10/2020', 1, 300], 
         ]
         df = pd.DataFrame(data=data, columns=columns)
         factory = FactoryRowDataFramePandas()
@@ -51,14 +52,14 @@ class DataFramePandasTest(unittest.TestCase):
 
         row = next(sut)
         self.assertEqual('NET', row.ticker())
-        self.assertEqual('COMPRA', row.operation())
+        self.assertEqual(OperationType.BUY, row.operation())
         self.assertEqual('10/10/2020', row.data())
-        self.assertEqual(1, row.quantity())
+        self.assertEqual(1, row.shares())
         self.assertEqual(100, row.mean_price())
         
         row = next(sut)
         self.assertEqual('NET', row.ticker())
-        self.assertEqual('COMPRA', row.operation())
+        self.assertEqual(OperationType.SELL, row.operation())
         self.assertEqual('10/10/2020', row.data())
-        self.assertEqual(1, row.quantity())
+        self.assertEqual(1, row.shares())
         self.assertEqual(300, row.mean_price())
