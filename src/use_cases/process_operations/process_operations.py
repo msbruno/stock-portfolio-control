@@ -2,7 +2,7 @@ from typing import Any
 from src.use_cases.interfaces.dataframe import DataFrame
 from src.domain.asset import Asset
 from src.domain.portfolio import Portfolio
-from src.use_cases.portfolio_manager import OperationData, PortfolioManager
+from src.use_cases.process_operations.portfolio_manager import OperationData, PortfolioManager
 
 class ProcessOperation:
 

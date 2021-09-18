@@ -1,4 +1,4 @@
-from src.use_cases.portfolio_manager import OperationType
+from src.use_cases.process_operations.portfolio_manager import OperationType
 
 
 class ColumnMapper:

@@ -1,5 +1,5 @@
 from src.external.dataframe.mappers import OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER
-from src.use_cases.portfolio_manager import OperationType
+from src.use_cases.process_operations.portfolio_manager import OperationType
 from src.use_cases.interfaces.dataframe import DataFrameRow
 from src.external.dataframe.dataframe_pandas import DataFramePandas, FactoryRowDataFramePandas
 import unittest

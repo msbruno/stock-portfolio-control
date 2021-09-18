@@ -1,4 +1,4 @@
-from src.use_cases.portfolio_manager import OperationData, OperationType, PortfolioManager
+from src.use_cases.process_operations.portfolio_manager import OperationData, OperationType, PortfolioManager
 from src.domain.portfolio import Portfolio
 import unittest
 

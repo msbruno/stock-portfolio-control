@@ -1,5 +1,5 @@
-from src.use_cases.result_entry import ResultEntry
-from src.use_cases.portfolio_manager import OperationData
+from src.use_cases.process_operations.result_entry import ResultEntry
+from src.use_cases.process_operations.portfolio_manager import OperationData
 import unittest 
 
 class ResultTest(unittest.TestCase):
