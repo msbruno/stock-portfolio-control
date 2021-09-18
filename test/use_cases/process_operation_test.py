@@ -1,4 +1,4 @@
-from src.main.mappers import COLUMN_MAPPER, OPERATION_MAPPER
+from src.external.dataframe.mappers import DEFAULT_COLUMN_MAPPER, OPERATION_MAPPER
 from src.external.dataframe.dataframe_pandas import DataFramePandas, FactoryRowDataFramePandas
 from src.use_cases.process_operations import ProcessOperation
 import unittest
@@ -14,7 +14,8 @@ class ProcessOperationTest(unittest.TestCase):
                 ['10/10/2020', 'NET', 'VENDA', 2, 100], 
         ]
         df = pd.DataFrame(data=data, columns=columns)
-        factory = FactoryRowDataFramePandas(OPERATION_MAPPER, COLUMN_MAPPER)
+        #TODO remove operation mapper and column mapper
+        factory = FactoryRowDataFramePandas(OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER)
         pandas_df = DataFramePandas(df, factory)
 
         self.sut = ProcessOperation(pandas_df)

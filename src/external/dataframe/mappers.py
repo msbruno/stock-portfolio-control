@@ -1,28 +1,39 @@
-class ColumnPositionMapper():
-    def __init__(self, 
-        position_column_data:int, 
-        position_column_ticker:int, 
-        position_column_operation:int, 
-        position_column_quantity:int, 
-        position_column_mean_price:int) -> None:
+from src.use_cases.portfolio_manager import OperationType
 
-        self._position_column_data = position_column_data
-        self._position_column_ticker = position_column_ticker
-        self._position_column_operation = position_column_operation
-        self._position_column_quantity = position_column_quantity
-        self._position_column_mean_price = position_column_mean_price
 
-    def data(self):
-        return self._position_column_data
+class ColumnMapper:
 
-    def ticker(self):
-        return self._position_column_ticker
-    
-    def operation(self):
-        return self._position_column_operation
-    
-    def quantity(self):
-        return self._position_column_quantity
+    def __init__(self, data:str, ticker:str, operation:str, quantity:str, mean_price:str) -> None:
+        self.__data = data
+        self.__ticker = ticker
+        self.__operation = operation
+        self.__quantity = quantity
+        self.__mean_price = mean_price
 
-    def mean_price(self):
-        return self._position_column_mean_price
+    def data_column(self):
+        return self.__data
+
+    def ticker_column(self):
+        return self.__ticker
+
+    def operation_column(self):
+        return self.__operation
+
+    def quantity_column(self):
+        return self.__quantity
+
+    def mean_price_column(self):
+        return self.__mean_price
+
+DEFAULT_COLUMN_MAPPER = ColumnMapper('data', 'ticker', 'operação', 'qtd', 'pm')
+ 
+
+
+OPERATION_MAPPER = {
+    'COMPRA': OperationType.BUY,
+    'VENDA': OperationType.SELL,
+    'SPLIT': OperationType.SPLIT,
+    'AGRUPAMENTO': OperationType.REVERSE_SPLIT,
+    'SUBSCRICAO': OperationType.SUBSCRIPTION,
+    'BONIFICACAO': OperationType.BONUS,
+}

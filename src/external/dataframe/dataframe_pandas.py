@@ -1,6 +1,6 @@
 
 from datetime import datetime
-from src.use_cases.portfolio_manager import OperationType
+from src.external.dataframe.mappers import ColumnMapper
 from typing import Any, Iterable
 import pandas
 from src.use_cases.interfaces.dataframe import DataFrame, DataFrameRow
@@ -35,17 +35,17 @@ class DataFrameRowPandas(DataFrameRow):
 
 class FactoryRowDataFramePandas:
 
-    def __init__(self, operation_mapper:dict, column_mapper:dict) -> None:
+    def __init__(self, operation_mapper:dict, column_mapper:ColumnMapper) -> None:
         self._operation_mapper = operation_mapper
         self._column_mapper = column_mapper
 
     def create(self, index, row: pandas.Series)-> DataFrameRow:
         return DataFrameRowPandas(index,
-            row[self._column_mapper['DATA_COLUMN']],
-            row[self._column_mapper['TICKER_COLUMN']],
-            self._operation_mapper[row[self._column_mapper['OPERATION_COLUMN']]],
-            row[self._column_mapper['QUANTITY_COLUMN']],
-            row[self._column_mapper['MEAN_PRICE_COLUMN']]
+            row[self._column_mapper.data_column()],
+            row[self._column_mapper.ticker_column()],
+            self._operation_mapper[row[self._column_mapper.operation_column()]],
+            row[self._column_mapper.quantity_column()],
+            row[self._column_mapper.mean_price_column()]
         )
 
 class DataFramePandas(DataFrame):
