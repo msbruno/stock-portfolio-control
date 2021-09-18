@@ -1,4 +1,5 @@
 import abc
+from typing import Any
 
 class DataFrame(abc.ABC):
 
@@ -8,6 +9,14 @@ class DataFrame(abc.ABC):
 
     @abc.abstractmethod
     def current_row(self):
+        pass
+
+    @abc.abstractmethod
+    def update(self, index: Any, column:str, value: Any):
+        pass
+
+    @abc.abstractmethod
+    def copy(self):
         pass
    
 

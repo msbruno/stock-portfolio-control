@@ -1,6 +1,6 @@
 from src.external.dataframe.mappers import DEFAULT_COLUMN_MAPPER, OPERATION_MAPPER
 from src.external.dataframe.dataframe_pandas import DataFramePandas, FactoryRowDataFramePandas
-from src.use_cases.process_operations.process_operations import ProcessOperation
+from src.use_cases.process_operations.process_operations import ProcessOperations
 import unittest
 import pandas as pd
 
@@ -18,8 +18,8 @@ class ProcessOperationTest(unittest.TestCase):
         factory = FactoryRowDataFramePandas(OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER)
         pandas_df = DataFramePandas(df, factory)
 
-        self.sut = ProcessOperation(pandas_df)
-        self.df_result:DataFramePandas = self.sut.process_operations()
+        self.sut = ProcessOperations()
+        self.df_result:DataFramePandas = self.sut.process_operations(pandas_df)
         self.operations_should_correctly_impact_asset()
         self.dataframe_should_be_uptodate()
 

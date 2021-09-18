@@ -4,13 +4,13 @@ from src.domain.asset import Asset
 from src.domain.portfolio import Portfolio
 from src.use_cases.process_operations.portfolio_manager import OperationData, PortfolioManager
 
-class ProcessOperation:
+class ProcessOperations:
 
-    def __init__(self, df:DataFrame) -> None:
-        self._df:DataFrame = df
+    def __init__(self):
         self._portfolio_mg :PortfolioManager = PortfolioManager(Portfolio())
 
-    def process_operations(self)->DataFrame:
+    def process_operations(self, df:DataFrame)->DataFrame:
+        self._df:DataFrame = df
         for row in self._df:
             self._current_row = row
             operation = self.__current_operation()
