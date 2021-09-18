@@ -18,7 +18,7 @@ class ProcessOperationTest(unittest.TestCase):
         factory = FactoryRowDataFramePandas(OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER)
         pandas_df = DataFramePandas(df, factory)
 
-        self.sut = ProcessOperations()
+        self.sut = ProcessOperations(DEFAULT_COLUMN_MAPPER)
         self.df_result:DataFramePandas = self.sut.process_operations(pandas_df)
         self.operations_should_correctly_impact_asset()
         self.dataframe_should_be_uptodate()
@@ -60,8 +60,8 @@ class ProcessOperationTest(unittest.TestCase):
 
     def verify_row_data(self, index, profit, acc_value, acc_shares, acc_mean_price, acc_profit):
         _row = self.df_result._df.iloc[index]
-        self.assertEqual(profit,_row['lucro'])
-        self.assertEqual(acc_value,_row['total acumulado'])
-        self.assertEqual(acc_shares,_row['qtd acumulado'])
-        self.assertEqual(acc_mean_price,_row['pm acumulado'])
-        self.assertEqual(acc_profit,_row['lucro acumulado'])
+        self.assertEqual(profit,_row[DEFAULT_COLUMN_MAPPER.op_profit()])
+        self.assertEqual(acc_value,_row[DEFAULT_COLUMN_MAPPER.acc_value()])
+        self.assertEqual(acc_shares,_row[DEFAULT_COLUMN_MAPPER.acc_shares()])
+        self.assertEqual(acc_mean_price,_row[DEFAULT_COLUMN_MAPPER.acc_mean_price()])
+        self.assertEqual(acc_profit,_row[DEFAULT_COLUMN_MAPPER.acc_profit()])

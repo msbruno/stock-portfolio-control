@@ -24,3 +24,18 @@ class ColumnMapper:
 
     def mean_price_column(self):
         return self.__mean_price
+    
+    def op_profit(self):
+        return 'profit'
+    
+    def acc_value(self):
+        return 'acc value'
+    
+    def acc_shares(self):
+        return 'acc shares'
+    
+    def acc_mean_price(self):
+        return 'acc mean_price'
+
+    def acc_profit(self):
+        return 'acc profit'

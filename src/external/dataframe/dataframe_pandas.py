@@ -1,6 +1,6 @@
 
 from datetime import datetime
-from src.external.dataframe.mappers import ColumnMapper
+from src.use_cases.interfaces.mappers import ColumnMapper
 from typing import Any, Iterable
 import pandas
 from src.use_cases.interfaces.dataframe import DataFrame, DataFrameRow
