@@ -1,5 +1,5 @@
 from src.external.datatable.mappers import DEFAULT_COLUMN_MAPPER, OPERATION_MAPPER
-from src.external.datatable.datatable_pandas import DataFramePandas, FactoryRowDataFramePandas
+from src.external.datatable.datatable_pandas import OperationsDataTablePandas, FactoryRowDataTablePandas
 from src.use_cases.process_operations.process_operations import ProcessOperations
 import unittest
 import pandas as pd
@@ -15,11 +15,11 @@ class ProcessOperationTest(unittest.TestCase):
         ]
         df = pd.DataFrame(data=data, columns=columns)
         #TODO remove operation mapper and column mapper
-        factory = FactoryRowDataFramePandas(OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER)
-        pandas_df = DataFramePandas(df, factory)
+        factory = FactoryRowDataTablePandas(OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER)
+        pandas_df = OperationsDataTablePandas(df, factory)
 
         self.sut = ProcessOperations(DEFAULT_COLUMN_MAPPER)
-        self.df_result:DataFramePandas = self.sut.process_operations(pandas_df)
+        self.df_result:OperationsDataTablePandas = self.sut.process_operations(pandas_df)
         self.operations_should_correctly_impact_asset()
         self.dataframe_should_be_uptodate()
 

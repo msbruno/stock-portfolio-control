@@ -1,7 +1,7 @@
 from src.external.datatable.mappers import OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER
 from src.use_cases.process_operations.portfolio_manager import OperationType
 from src.use_cases.interfaces.datatable import DataTableRow
-from src.external.datatable.datatable_pandas import DataFramePandas, FactoryRowDataFramePandas
+from src.external.datatable.datatable_pandas import OperationsDataTablePandas, FactoryRowDataTablePandas
 import unittest
 import pandas as pd
 
@@ -12,7 +12,7 @@ class FactoryRowDataFramePandasTest(unittest.TestCase):
         data = ['NET', 'COMPRA', '10/10/2020', 1, 100]
         row = self._create_row(data)
 
-        sut = FactoryRowDataFramePandas(OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER)
+        sut = FactoryRowDataTablePandas(OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER)
         row:DataTableRow = sut.create(1, row)
         self.assertEqual('NET', row.ticker())
         self.assertEqual(OperationType.BUY, row.operation())
@@ -35,8 +35,8 @@ class DataFramePandasTest(unittest.TestCase):
                 ['NET', 'COMPRA', '10/10/2020', 1, 300], 
         ]
         df = pd.DataFrame(data=data, columns=columns)
-        factory = FactoryRowDataFramePandas(OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER)
-        sut = DataFramePandas(df, factory)
+        factory = FactoryRowDataTablePandas(OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER)
+        sut = OperationsDataTablePandas(df, factory)
 
         for x in sut:
             pass
@@ -48,8 +48,8 @@ class DataFramePandasTest(unittest.TestCase):
                 ['NET', 'VENDA', '10/10/2020', 1, 300], 
         ]
         df = pd.DataFrame(data=data, columns=columns)
-        factory = FactoryRowDataFramePandas(OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER)
-        sut = DataFramePandas(df, factory)
+        factory = FactoryRowDataTablePandas(OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER)
+        sut = OperationsDataTablePandas(df, factory)
 
         row = next(sut)
         self.assertEqual('NET', row.ticker())

@@ -2,7 +2,7 @@ from __future__ import annotations
 import abc
 from typing import Any
 
-class DataTable(abc.ABC):
+class OperationsDataTable(abc.ABC):
 
     @abc.abstractmethod
     def __next__(self):
@@ -17,7 +17,7 @@ class DataTable(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def copy(self)->DataTable:
+    def copy(self)->OperationsDataTable:
         pass
    
 
