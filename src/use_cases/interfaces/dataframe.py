@@ -1,3 +1,4 @@
+from __future__ import annotations
 import abc
 from typing import Any
 
@@ -16,7 +17,7 @@ class DataFrame(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def copy(self):
+    def copy(self)->DataFrame:
         pass
    
 

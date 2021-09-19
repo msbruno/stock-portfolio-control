@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Any
 from src.domain.asset import Asset
 from src.domain.operation import BuyOperation, OperationProfit, SellOperation, SplitOperation
 from src.domain.portfolio import Portfolio
