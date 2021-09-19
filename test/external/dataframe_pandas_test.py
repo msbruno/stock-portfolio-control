@@ -1,7 +1,7 @@
-from src.external.dataframe.mappers import OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER
+from src.external.datatable.mappers import OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER
 from src.use_cases.process_operations.portfolio_manager import OperationType
-from src.use_cases.interfaces.dataframe import DataFrameRow
-from src.external.dataframe.dataframe_pandas import DataFramePandas, FactoryRowDataFramePandas
+from src.use_cases.interfaces.datatable import DataTableRow
+from src.external.datatable.datatable_pandas import DataFramePandas, FactoryRowDataFramePandas
 import unittest
 import pandas as pd
 
@@ -13,7 +13,7 @@ class FactoryRowDataFramePandasTest(unittest.TestCase):
         row = self._create_row(data)
 
         sut = FactoryRowDataFramePandas(OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER)
-        row:DataFrameRow = sut.create(1, row)
+        row:DataTableRow = sut.create(1, row)
         self.assertEqual('NET', row.ticker())
         self.assertEqual(OperationType.BUY, row.operation())
         self.assertEqual('10/10/2020', row.data())

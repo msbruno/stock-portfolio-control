@@ -3,10 +3,10 @@ from datetime import datetime
 from src.use_cases.interfaces.mappers import ColumnMapper
 from typing import Any, Iterable
 import pandas
-from src.use_cases.interfaces.dataframe import DataFrame, DataFrameRow
+from src.use_cases.interfaces.datatable import DataTable, DataTableRow
 
 
-class DataFrameRowPandas(DataFrameRow):
+class DataFrameRowPandas(DataTableRow):
     def __init__(self, index, data: datetime, ticker:str, operation:str, quantity:int, mean_price:float) -> None:
         self._index = index
         self._data = data
@@ -39,7 +39,7 @@ class FactoryRowDataFramePandas:
         self._operation_mapper = operation_mapper
         self._column_mapper = column_mapper
 
-    def create(self, index, row: pandas.Series)-> DataFrameRow:
+    def create(self, index, row: pandas.Series)-> DataTableRow:
         return DataFrameRowPandas(index,
             row[self._column_mapper.data_column()],
             row[self._column_mapper.ticker_column()],
@@ -48,7 +48,7 @@ class FactoryRowDataFramePandas:
             row[self._column_mapper.mean_price_column()]
         )
 
-class DataFramePandas(DataFrame):
+class DataFramePandas(DataTable):
     
     def __init__(self, df: pandas.DataFrame, row_factory: FactoryRowDataFramePandas):
         self._df:pandas.DataFrame = df
@@ -60,7 +60,7 @@ class DataFramePandas(DataFrame):
     def __iter__(self):
         return self
 
-    def __next__(self)->DataFrameRow:
+    def __next__(self)->DataTableRow:
         self._current_index, self._current_row = next(self._get_row_iterator())
         return self._row_factory.create(self._current_index, self._current_row)
     

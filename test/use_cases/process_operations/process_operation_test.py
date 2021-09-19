@@ -1,5 +1,5 @@
-from src.external.dataframe.mappers import DEFAULT_COLUMN_MAPPER, OPERATION_MAPPER
-from src.external.dataframe.dataframe_pandas import DataFramePandas, FactoryRowDataFramePandas
+from src.external.datatable.mappers import DEFAULT_COLUMN_MAPPER, OPERATION_MAPPER
+from src.external.datatable.datatable_pandas import DataFramePandas, FactoryRowDataFramePandas
 from src.use_cases.process_operations.process_operations import ProcessOperations
 import unittest
 import pandas as pd

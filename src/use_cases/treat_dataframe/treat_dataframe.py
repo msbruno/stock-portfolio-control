@@ -1,7 +1,7 @@
 import abc
-from src.use_cases.dataframe_loader.dataframe_loader import DataFrameLoader
+from src.use_cases.datatable_loader.datatable_loader import DataFrameLoader
 from src.use_cases.process_operations.process_operations import ProcessOperations
-from src.use_cases.interfaces.dataframe import DataFrame
+from src.use_cases.interfaces.datatable import DataTable
 
 
 class GeneratePortfolio:
@@ -11,8 +11,8 @@ class GeneratePortfolio:
         self.__df_loader = df_loader
 
     def treat(self, path_dataframe:str, path_dataframe_types:str):
-        self.__df_original:DataFrame = self.__df_loader.load(path_dataframe)
-        self.__df_types:DataFrame = self.__df_loader.load(path_dataframe_types)
+        self.__df_original:DataTable = self.__df_loader.load(path_dataframe)
+        self.__df_types:DataTable = self.__df_loader.load(path_dataframe_types)
         self.__df_treated = self.__df_original.copy()
         self.__df_merger(self.__df_treated,self.__df_types)
         self.__df_treated = self.__process_operation.process_operations(self.__df_treated)

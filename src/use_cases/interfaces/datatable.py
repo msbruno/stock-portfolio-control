@@ -2,7 +2,7 @@ from __future__ import annotations
 import abc
 from typing import Any
 
-class DataFrame(abc.ABC):
+class DataTable(abc.ABC):
 
     @abc.abstractmethod
     def __next__(self):
@@ -17,11 +17,11 @@ class DataFrame(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def copy(self)->DataFrame:
+    def copy(self)->DataTable:
         pass
    
 
-class DataFrameRow(abc.ABC):
+class DataTableRow(abc.ABC):
 
     @abc.abstractmethod
     def index(self):
