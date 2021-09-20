@@ -1,9 +1,9 @@
-
+from __future__ import annotations
 from datetime import datetime
 
 from pandas.core.frame import DataFrame
 from src.use_cases.interfaces.mappers import ColumnMapper
-from typing import Any, Iterable
+from typing import Any, Iterable, List
 import pandas
 from src.use_cases.interfaces.datatable import OperationsDataTable, DataTableRow
 
@@ -99,4 +99,17 @@ class OperationsDataTablePandas(OperationsDataTable):
         result = result[result[acc_shares_column]>0]
         return self.__create_dataframe(result)
 
+    
+    def get_all_tickes(self)->List:
+        ticker_column = self.__column_mapper().ticker_column()
+        return self._df[ticker_column].tolist()
+
+    
+    def first_date(self)->datetime:
+        return self._df.iloc[0][self.__column_mapper().data_column()]
+
+    def print(self):
+        return print(self._df)
+
+    
 

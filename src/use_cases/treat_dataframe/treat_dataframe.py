@@ -1,22 +1,25 @@
 import abc
+from src.use_cases.interfaces.mark_to_market import MarkToMarket
 from src.use_cases.datatable_loader.datatable_loader import DataTableLoader
 from src.use_cases.process_operations.process_operations import ProcessOperations
 from src.use_cases.interfaces.datatable import OperationsDataTable
 
 
+
 class GeneratePortfolio:
 
-    def __init__(self, process_operations:ProcessOperations, df_loader: DataTableLoader) -> None:
+    def __init__(self, 
+    process_operations:ProcessOperations, 
+    df_loader: DataTableLoader,
+    mark_to_market:MarkToMarket) -> None:
         self.__process_operation = process_operations
         self.__df_loader = df_loader
+        self.__mark_to_market = mark_to_market
 
-    def treat(self, path_dataframe:str, path_dataframe_types:str):
-        self.__df_original:OperationsDataTable = self.__df_loader.load(path_dataframe)
-        self.__df_types:OperationsDataTable = self.__df_loader.load(path_dataframe_types)
-        self.__df_treated = self.__df_original.copy()
-        self.__df_merger(self.__df_treated,self.__df_types)
-        self.__df_treated = self.__process_operation.process_operations(self.__df_treated)
+    def load(self, path_datatable_operations:str, path_datatable_types:str):
+        self.__original_datatable:OperationsDataTable = self.__df_loader.load(path_datatable_operations, path_datatable_types)
+        self.__datatable_result = self.__process_operation.process_operations(self.__original_datatable)
         return self
 
-    def last(self):
-        self.__df_treated.last
+    def postions_marked_to_market(self):
+        return self.__mark_to_market.mark(self.__datatable_result.last())

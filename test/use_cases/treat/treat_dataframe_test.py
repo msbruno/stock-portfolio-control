@@ -1,0 +1,19 @@
+from logging import NOTSET
+from src.external.datatable.mappers import OPERATION_MAPPER
+from src.external.datatable.datatable_pandas import FactoryRowDataTablePandas
+from src.external.use_cases.datatable_loader import FactoryOperationsDataTablePandas
+from src.use_cases.datatable_loader.datatable_loader import DataTableLoader
+from src.use_cases.interfaces.mappers import ColumnMapper
+from src.use_cases.process_operations.process_operations import ProcessOperations
+from src.use_cases.treat_dataframe.treat_dataframe import GeneratePortfolio
+import unittest
+
+class TreatDataframe(unittest.TestCase):
+
+    def test(self):
+
+        column_mapper = ColumnMapper('data', 'ticker', 'operação', 'qtd', 'pm')
+        process_ops = ProcessOperations(column_mapper)
+        row_factory = FactoryRowDataTablePandas(OPERATION_MAPPER ,column_mapper)
+        dt_loader = FactoryOperationsDataTablePandas(row_factory)
+        generate = GeneratePortfolio(process_ops, dt_loader, None)

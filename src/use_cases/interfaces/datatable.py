@@ -1,5 +1,6 @@
 from __future__ import annotations
 import abc
+from datetime import date, datetime
 from typing import Any
 
 class OperationsDataTable(abc.ABC):
@@ -17,7 +18,23 @@ class OperationsDataTable(abc.ABC):
         pass
 
     @abc.abstractmethod
+    def update_all(self, column:str, condition:str, value: Any):
+        pass
+
+    @abc.abstractmethod
     def copy(self)->OperationsDataTable:
+        pass
+
+    @abc.abstractmethod
+    def last(self)->OperationsDataTable:
+        pass
+    
+    @abc.abstractmethod
+    def get_all_tickes(self)->list:
+        pass
+
+    @abc.abstractmethod
+    def first_date(self)->datetime:
         pass
    
 
