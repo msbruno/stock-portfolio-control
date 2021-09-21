@@ -1,6 +1,6 @@
 from __future__ import annotations
 import abc
-from datetime import date, datetime
+from datetime import datetime
 from typing import Any
 
 from pandas.core.frame import DataFrame
@@ -60,4 +60,10 @@ class OperationRow(abc.ABC):
 
     @abc.abstractmethod
     def operation(self):
+        pass
+
+class OperationsDataLoader(abc.ABC):
+
+    @abc.abstractmethod
+    def load(self, path_operations:str, path_types:str)-> OperationsData:
         pass

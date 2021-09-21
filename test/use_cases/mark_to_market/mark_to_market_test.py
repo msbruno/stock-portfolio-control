@@ -1,6 +1,6 @@
 from datetime import datetime
+from src.external.datatable.datatable_loader import FactoryOperationsDataPandas
 from test.resources.load_file import path_resource
-from src.external.use_cases.datatable_loader import FactoryOperationsDataPandas
 from src.use_cases.process_operations.process_operations import ProcessOperations
 from src.external.datatable.mappers import OPERATION_MAPPER
 from src.external.datatable.datatable_pandas import FactoryRowDataTablePandas

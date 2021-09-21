@@ -1,4 +1,3 @@
-from src.external.use_cases.datatable_loader import FactoryOperationsDataPandas
 from src.use_cases.process_operations.process_operations import ProcessOperations
 from src.use_cases.interfaces.mappers import ColumnMapper
 from src.external.datatable.mappers import DEFAULT_COLUMN_MAPPER, OPERATION_MAPPER

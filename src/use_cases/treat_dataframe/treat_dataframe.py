@@ -1,8 +1,7 @@
 import abc
 from src.use_cases.interfaces.mark_to_market import MarkToMarket
-from src.use_cases.interfaces.datatable_loader import OperationsDataLoader
 from src.use_cases.process_operations.process_operations import ProcessOperations
-from src.use_cases.interfaces.datatable import OperationsData
+from src.use_cases.interfaces.datatable import OperationsData, OperationsDataLoader
 
 
 
