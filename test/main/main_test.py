@@ -1,11 +1,11 @@
+from src.external.datatable.datatable_loader import FactoryOperationsDataPandas
 from test.resources.load_file import path_resource
 from src.domain.portfolio import Portfolio
 from src.use_cases.interfaces.datatable import OperationsData
 from src.external.datatable.mappers import OPERATION_MAPPER
 from src.use_cases.process_operations.process_operations import ProcessOperations
 from src.use_cases.interfaces.mappers import ColumnMapper
-from src.external.datatable.datatable_pandas import FactoryRowDataTablePandas, OperationsDataPandas
-from src.external.use_cases.datatable_loader import FactoryOperationsDataPandas
+from src.external.datatable.datatable_pandas import FactoryRowDataTablePandas
 import unittest
 from src.main.main import run
 import logging

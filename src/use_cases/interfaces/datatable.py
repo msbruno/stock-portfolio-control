@@ -2,6 +2,7 @@ from __future__ import annotations
 import abc
 from datetime import datetime
 from typing import Any
+from numpy import void
 
 from pandas.core.frame import DataFrame
 
@@ -33,6 +34,10 @@ class OperationsData(abc.ABC):
 
     @abc.abstractmethod
     def last_positions(self, date_limit:datetime)-> OperationsData:
+        pass
+
+    @abc.abstractmethod
+    def print(self)->void:
         pass
    
 

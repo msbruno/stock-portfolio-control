@@ -1,5 +1,6 @@
 from __future__ import annotations
 from datetime import datetime
+from numpy import void
 
 from pandas.core.frame import DataFrame
 from src.use_cases.interfaces.mappers import ColumnMapper
@@ -110,7 +111,7 @@ class OperationsDataPandas(OperationsData):
     def first_date(self)->datetime:
         return self._df.iloc[0][self.__column_mapper().date_column()]
 
-    def print(self):
+    def print(self)->void:
         return print(self._df)
 
     

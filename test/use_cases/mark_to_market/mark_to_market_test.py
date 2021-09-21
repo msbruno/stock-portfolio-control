@@ -15,9 +15,9 @@ from src.use_cases.interfaces.datatable import OperationsData
 yf.pdr_override()
 
 
-class MarkToMarket(MarkToMarket):
+class MarkToMarketUsingYahoo(MarkToMarket):
 
-    def load_market_values(self, dt: OperationsData, date:datetime):
+    def _load_market_values(self, dt: OperationsData, date:datetime):
         tickers = dt.get_all_tickes()
         if len(tickers) == 0:
             raise Exception("There are no tickers to mark portfolio to market. Insert a new date or operation table.")
@@ -25,9 +25,9 @@ class MarkToMarket(MarkToMarket):
         self.__last_market_value = last_market_value.fillna(method='ffill')
 
     
-    def mark(self, dt: OperationsData, date:datetime=None):
+    def mark_to_market(self, dt: OperationsData, date:datetime=None):
         result = dt.last_positions(date)
-        self.load_market_values(result, date)
+        self._load_market_values(result, date)
 
         for row in result:
             market_value_per_share = self.__market_value(row.ticker())
@@ -40,7 +40,7 @@ class MarkToMarket(MarkToMarket):
 
 
 
-class MarkToMarketTest(unittest.TestCase):
+class MarkToMarketUsingYahooTest(unittest.TestCase):
     
     def test_mark_to_market(self):
 
@@ -54,7 +54,7 @@ class MarkToMarketTest(unittest.TestCase):
         sut = ProcessOperations(column_mapper)
         df_processed:OperationsData = sut.process_operations(df)
 
-        marker = MarkToMarket()
+        marker = MarkToMarketUsingYahoo()
         filter = datetime.strptime('12/10/2020', '%d/%m/%Y')
-        result = marker.mark(df_processed, filter)
+        result = marker.mark_to_market(df_processed, filter)
         result.print()

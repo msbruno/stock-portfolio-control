@@ -1,11 +1,12 @@
 import abc
+from datetime import datetime
 from src.use_cases.interfaces.mark_to_market import MarkToMarket
 from src.use_cases.process_operations.process_operations import ProcessOperations
 from src.use_cases.interfaces.datatable import OperationsData, OperationsDataLoader
 
 
 
-class GeneratePortfolio:
+class GeneratePortfolioMarkedToMarket:
 
     def __init__(self, 
     process_operations:ProcessOperations, 
@@ -20,5 +21,5 @@ class GeneratePortfolio:
         self.__datatable_result = self.__process_operation.process_operations(self.__original_datatable)
         return self
 
-    def postions_marked_to_market(self):
-        return self.__mark_to_market.mark(self.__datatable_result.last())
+    def portfolio_marked_to_market(self, date:datetime=None)->OperationsData:
+        return self.__mark_to_market.mark_to_market(self.__datatable_result, date)
