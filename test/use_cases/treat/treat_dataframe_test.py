@@ -2,7 +2,6 @@ from logging import NOTSET
 from src.external.datatable.mappers import OPERATION_MAPPER
 from src.external.datatable.datatable_pandas import FactoryRowDataTablePandas
 from src.external.use_cases.datatable_loader import FactoryOperationsDataTablePandas
-from src.use_cases.datatable_loader.datatable_loader import DataTableLoader
 from src.use_cases.interfaces.mappers import ColumnMapper
 from src.use_cases.process_operations.process_operations import ProcessOperations
 from src.use_cases.treat_dataframe.treat_dataframe import GeneratePortfolio

@@ -1,3 +1,4 @@
+from test.resources.load_file import path_resource
 from src.domain.portfolio import Portfolio
 from src.use_cases.interfaces.datatable import OperationsDataTable
 from src.external.datatable.mappers import OPERATION_MAPPER
@@ -9,8 +10,8 @@ import unittest
 from src.main.main import run
 import logging
 
-path = r'D:\carreira\Python\controle\stock-portfolio-control\src\main\portfolio.csv'
-path2 = r'D:\carreira\Python\controle\stock-portfolio-control\src\main\portfolio_type.csv'
+path = path_resource('portfolio.csv')
+path2 = path_resource('portfolio_type.csv')
 
 class MainTest(unittest.TestCase):
 
