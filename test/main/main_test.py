@@ -23,5 +23,5 @@ class MainTest(unittest.TestCase):
 
         sut = ProcessOperations(column_mapper)
         df_result:OperationsDataTable = sut.process_operations(df)
-        df_result.print()
+        #df_result.print()
         

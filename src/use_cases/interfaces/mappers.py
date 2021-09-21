@@ -3,14 +3,14 @@ from src.use_cases.process_operations.portfolio_manager import OperationType
 
 class ColumnMapper:
 
-    def __init__(self, data:str, ticker:str, operation:str, quantity:str, mean_price:str) -> None:
-        self.__data = data
+    def __init__(self, date:str='date', ticker:str='ticker', operation:str='operation', quantity:str='quantity', mean_price:str='mean_price') -> None:
+        self.__data = date
         self.__ticker = ticker
         self.__operation = operation
         self.__quantity = quantity
         self.__mean_price = mean_price
 
-    def data_column(self):
+    def date_column(self):
         return self.__data
 
     def ticker_column(self):

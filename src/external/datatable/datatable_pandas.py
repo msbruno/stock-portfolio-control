@@ -43,7 +43,7 @@ class FactoryRowDataTablePandas:
 
     def create(self, index, row: pandas.Series)-> DataTableRow:
         return DataTableRowPandas(index,
-            row[self._column_mapper.data_column()],
+            row[self._column_mapper.date_column()],
             row[self._column_mapper.ticker_column()],
             self._operation_mapper[row[self._column_mapper.operation_column()]],
             row[self._column_mapper.quantity_column()],
@@ -89,12 +89,14 @@ class OperationsDataTablePandas(OperationsDataTable):
     def __create_dataframe(self, df_to_copy:DataFrame):
         return OperationsDataTablePandas(df_to_copy.copy(), self._row_factory)
 
-    def last(self, data:str=None):
-        if data is not None:
-            pass
+    def last_positions(self, date_limit:datetime=None):
+        date_column = self.__column_mapper().date_column()
         ticker_column = self.__column_mapper().ticker_column()
         acc_shares_column = self.__column_mapper().acc_shares()
         result = self._df.copy()
+        
+        if date_limit is not None:
+            result = result[result[date_column] <= date_limit]
         result = result.groupby(ticker_column).tail(1)
         result = result[result[acc_shares_column]>0]
         return self.__create_dataframe(result)
@@ -106,7 +108,7 @@ class OperationsDataTablePandas(OperationsDataTable):
 
     
     def first_date(self)->datetime:
-        return self._df.iloc[0][self.__column_mapper().data_column()]
+        return self._df.iloc[0][self.__column_mapper().date_column()]
 
     def print(self):
         return print(self._df)

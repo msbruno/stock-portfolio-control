@@ -1,9 +1,12 @@
+from datetime import datetime
+from test.resources.load_file import path_resource
 from src.external.use_cases.datatable_loader import FactoryOperationsDataTablePandas
 from src.use_cases.process_operations.process_operations import ProcessOperations
 from src.external.datatable.mappers import OPERATION_MAPPER
 from src.external.datatable.datatable_pandas import FactoryRowDataTablePandas
 from src.use_cases.interfaces.mappers import ColumnMapper
 from src.use_cases.interfaces.mark_to_market import MarkToMarket
+
 import unittest
 
 import yfinance as yf
@@ -12,36 +15,46 @@ from src.use_cases.interfaces.datatable import OperationsDataTable
 yf.pdr_override()
 
 
-class MarkToMarketFake(MarkToMarket):
+class MarkToMarket(MarkToMarket):
 
-    def load_market_values(self, dt: OperationsDataTable):
-        starting_day = dt.first_date()
+    def load_market_values(self, dt: OperationsDataTable, date:datetime):
         tickers = dt.get_all_tickes()
-        last_market_value = web.get_data_yahoo(tickers, start=starting_day)['Close']
+        if len(tickers) == 0:
+            raise Exception("There are no tickers to mark portfolio to market. Insert a new date or operation table.")
+        last_market_value = web.get_data_yahoo(tickers, end=date)['Close']
         self.__last_market_value = last_market_value.fillna(method='ffill')
-        print(last_market_value)
 
     
-    def mark(self, dt: OperationsDataTable):
-        result = dt.copy()
-        self.load_market_values(result)
-        #dt.update()
+    def mark(self, dt: OperationsDataTable, date:datetime=None):
+        result = dt.last_positions(date)
+        self.load_market_values(result, date)
+
+        for row in result:
+            market_value_per_share = self.__market_value(row.ticker())
+            market_value = market_value_per_share * row.shares()
+            result.update(row.index(), "market_value", market_value)
+        return result
+
+    def __market_value(self, ticker:str):
+        return self.__last_market_value[ticker].tail(1)[0]
 
 
 
 class MarkToMarketTest(unittest.TestCase):
     
-    def test(self):
+    def test_mark_to_market(self):
 
-        path = r'D:\carreira\Python\controle\stock-portfolio-control\src\main\portfolio.csv'
-        path2 = r'D:\carreira\Python\controle\stock-portfolio-control\src\main\portfolio_type.csv'
+        path = path_resource('portfolio.csv')
+        path2 = path_resource('portfolio_type.csv')
         column_mapper =  ColumnMapper('data', 'ticker', 'operação', 'qtd', 'pm')
         row_factory = FactoryRowDataTablePandas(OPERATION_MAPPER, column_mapper)
         loader = FactoryOperationsDataTablePandas(row_factory)
         df = loader.load(path, path2)
 
         sut = ProcessOperations(column_mapper)
-        df_result:OperationsDataTable = sut.process_operations(df)
+        df_processed:OperationsDataTable = sut.process_operations(df)
 
-        marker = MarkToMarketFake()
-        marker.mark(df_result)
+        marker = MarkToMarket()
+        filter = datetime.strptime('12/10/2020', '%d/%m/%Y')
+        result = marker.mark(df_processed, filter)
+        result.print()

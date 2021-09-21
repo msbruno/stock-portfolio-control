@@ -3,6 +3,8 @@ import abc
 from datetime import date, datetime
 from typing import Any
 
+from pandas.core.frame import DataFrame
+
 class OperationsDataTable(abc.ABC):
 
     @abc.abstractmethod
@@ -18,23 +20,19 @@ class OperationsDataTable(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def update_all(self, column:str, condition:str, value: Any):
-        pass
-
-    @abc.abstractmethod
     def copy(self)->OperationsDataTable:
         pass
 
-    @abc.abstractmethod
-    def last(self)->OperationsDataTable:
-        pass
-    
     @abc.abstractmethod
     def get_all_tickes(self)->list:
         pass
 
     @abc.abstractmethod
     def first_date(self)->datetime:
+        pass
+
+    @abc.abstractmethod
+    def last_positions(self, date_limit:datetime)-> OperationsDataTable:
         pass
    
 

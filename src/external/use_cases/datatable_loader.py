@@ -22,10 +22,10 @@ class FactoryOperationsDataTablePandas(DataTableLoader):
         return OperationsDataTablePandas(self.__current_df, self.__factory_row)
 
     def __order_bydata(self, df_operations_pd):
-        return df_operations_pd.sort_values(self.__column_mapper.data_column())
+        return df_operations_pd.sort_values(self.__column_mapper.date_column())
 
     def __convert_to_datetime(self, df_operations_pd):
-        df_operations_pd[self.__column_mapper.data_column()] = pd.to_datetime(df_operations_pd[self.__column_mapper.data_column()], format=self.__data_format)
+        df_operations_pd[self.__column_mapper.date_column()] = pd.to_datetime(df_operations_pd[self.__column_mapper.date_column()], format=self.__data_format)
         return df_operations_pd
 
     def __load(self, path):
