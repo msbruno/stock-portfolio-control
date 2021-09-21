@@ -1,7 +1,7 @@
 from src.use_cases.interfaces.mappers import ColumnMapper
 from src.use_cases.process_operations.portfolio_manager import OperationType
 
-DEFAULT_COLUMN_MAPPER = ColumnMapper('data', 'ticker', 'operação', 'qtd', 'pm')
+DEFAULT_COLUMN_MAPPER = ColumnMapper('data', 'ticker', 'operação', 'qtd', 'pm', 'corretagem')
  
 OPERATION_MAPPER = {
     'COMPRA': OperationType.BUY,

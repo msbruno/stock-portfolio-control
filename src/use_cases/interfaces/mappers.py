@@ -3,12 +3,19 @@ from src.use_cases.process_operations.portfolio_manager import OperationType
 
 class ColumnMapper:
 
-    def __init__(self, date:str='date', ticker:str='ticker', operation:str='operation', quantity:str='quantity', mean_price:str='mean_price') -> None:
+    def __init__(self, 
+    date:str='date', 
+    ticker:str='ticker', 
+    operation:str='operation', 
+    quantity:str='quantity', 
+    mean_price:str='mean_price', 
+    fees:str='fees') -> None:
         self.__data = date
         self.__ticker = ticker
         self.__operation = operation
         self.__quantity = quantity
         self.__mean_price = mean_price
+        self.__fees = fees
 
     def date_column(self):
         return self.__data
@@ -24,6 +31,9 @@ class ColumnMapper:
 
     def mean_price_column(self):
         return self.__mean_price
+
+    def fees_column(self):
+        return self.__fees
     
     def op_profit(self):
         return 'profit'

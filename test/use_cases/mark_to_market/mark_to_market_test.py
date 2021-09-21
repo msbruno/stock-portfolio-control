@@ -2,7 +2,7 @@ from datetime import datetime
 from src.external.datatable.datatable_loader import FactoryOperationsDataPandas
 from test.resources.load_file import path_resource
 from src.use_cases.process_operations.process_operations import ProcessOperations
-from src.external.datatable.mappers import OPERATION_MAPPER
+from src.external.datatable.mappers import DEFAULT_COLUMN_MAPPER, OPERATION_MAPPER
 from src.external.datatable.datatable_pandas import FactoryRowDataTablePandas
 from src.use_cases.interfaces.mappers import ColumnMapper
 from src.use_cases.interfaces.mark_to_market import MarkToMarket
@@ -46,12 +46,12 @@ class MarkToMarketUsingYahooTest(unittest.TestCase):
 
         path = path_resource('portfolio.csv')
         path2 = path_resource('portfolio_type.csv')
-        column_mapper =  ColumnMapper('data', 'ticker', 'operação', 'qtd', 'pm')
-        row_factory = FactoryRowDataTablePandas(OPERATION_MAPPER, column_mapper)
+        
+        row_factory = FactoryRowDataTablePandas(OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER)
         loader = FactoryOperationsDataPandas(row_factory)
         df = loader.load(path, path2)
 
-        sut = ProcessOperations(column_mapper)
+        sut = ProcessOperations(DEFAULT_COLUMN_MAPPER)
         df_processed:OperationsData = sut.process_operations(df)
 
         marker = MarkToMarketUsingYahoo()

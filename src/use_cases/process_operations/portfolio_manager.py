@@ -14,13 +14,14 @@ class OperationType(Enum):
 
 class OperationData:  
     
-    def __init__(self, shares:int, mean_price:float, operation:OperationType):
+    def __init__(self, shares:int, mean_price:float, operation:OperationType, fees:float=0):
         self._mean_price = mean_price
         self._share = shares
         self._operation = operation
+        self._fees = fees
      
     def volume(self)->float:
-        return self._mean_price * self._share
+        return (self._mean_price * self._share) + self._fees
     
     def shares(self)->int:
         return self._share

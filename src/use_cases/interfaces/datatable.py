@@ -67,6 +67,11 @@ class OperationRow(abc.ABC):
     def operation(self):
         pass
 
+    @abc.abstractmethod
+    def fees(self):
+        pass
+
+
 class OperationsDataLoader(abc.ABC):
 
     @abc.abstractmethod

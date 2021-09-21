@@ -7,11 +7,11 @@ import pandas as pd
 class ProcessOperationTest(unittest.TestCase):
 
     def test_should_process_buy_operation(self):
-        columns = ['data', 'ticker', 'operação', 'qtd', 'pm']
-        data = [['10/10/2020', 'NET', 'COMPRA', 5, 100], 
-                ['10/10/2020', 'NET', 'COMPRA', 5, 300], 
-                ['10/10/2020', 'NET', 'VENDA', 2, 100], 
-                ['10/10/2020', 'NET', 'VENDA', 2, 100], 
+        columns = ['data', 'ticker', 'operação', 'qtd', 'pm', 'corretagem']
+        data = [['10/10/2020', 'NET', 'COMPRA', 5, 100, 5], 
+                ['10/10/2020', 'NET', 'COMPRA', 5, 300,5], 
+                ['10/10/2020', 'NET', 'VENDA', 2, 100, 5], 
+                ['10/10/2020', 'NET', 'VENDA', 2, 100, 5], 
         ]
         df = pd.DataFrame(data=data, columns=columns)
         #TODO remove operation mapper and column mapper

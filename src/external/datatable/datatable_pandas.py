@@ -4,19 +4,20 @@ from numpy import void
 
 from pandas.core.frame import DataFrame
 from src.use_cases.interfaces.mappers import ColumnMapper
+from src.use_cases.interfaces.datatable import OperationsData, OperationRow
 from typing import Any, Iterable, List
 import pandas
-from src.use_cases.interfaces.datatable import OperationsData, OperationRow
 
 
 class OperationRowPandas(OperationRow):
-    def __init__(self, index, data: datetime, ticker:str, operation:str, quantity:int, mean_price:float) -> None:
+    def __init__(self, index, data: datetime, ticker:str, operation:str, quantity:int, mean_price:float, fees:float) -> None:
         self._index = index
         self._data = data
         self._ticker = ticker
         self._quantity = quantity
         self._mean_price = mean_price
         self._operation = operation
+        self._fees = fees
 
     def index(self):
         return self._index
@@ -36,6 +37,9 @@ class OperationRowPandas(OperationRow):
     def operation(self):
         return self._operation
 
+    def fees(self):
+        return self._fees
+
 class FactoryRowDataTablePandas:
 
     def __init__(self, operation_mapper:dict, column_mapper:ColumnMapper) -> None:
@@ -49,6 +53,7 @@ class FactoryRowDataTablePandas:
             self._operation_mapper[row[self._column_mapper.operation_column()]],
             row[self._column_mapper.quantity_column()],
             row[self._column_mapper.mean_price_column()],
+            row[self._column_mapper.fees_column()]
         )
 
     def column_mapper(self)->ColumnMapper:
@@ -101,7 +106,6 @@ class OperationsDataPandas(OperationsData):
         result = result.groupby(ticker_column).tail(1)
         result = result[result[acc_shares_column]>0]
         return self.__create_dataframe(result)
-
     
     def get_all_tickes(self)->List:
         ticker_column = self.__column_mapper().ticker_column()
