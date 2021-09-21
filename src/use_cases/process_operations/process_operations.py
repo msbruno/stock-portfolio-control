@@ -1,5 +1,5 @@
 from typing import Any
-from src.use_cases.interfaces.datatable import OperationsDataTable
+from src.use_cases.interfaces.datatable import OperationsData
 from src.use_cases.interfaces.mappers import ColumnMapper
 from src.domain.asset import Asset
 from src.domain.portfolio import Portfolio
@@ -11,8 +11,8 @@ class ProcessOperations:
         self.__portfolio_mg :PortfolioManager = PortfolioManager(Portfolio())
         self.__column_mapper = column_mapper
 
-    def process_operations(self, df:OperationsDataTable)->OperationsDataTable:
-        self.__df:OperationsDataTable = df
+    def process_operations(self, df:OperationsData)->OperationsData:
+        self.__df:OperationsData = df
         for row in self.__df:
             self._current_row = row
             operation = self.__current_operation()

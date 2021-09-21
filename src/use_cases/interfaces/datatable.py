@@ -5,7 +5,7 @@ from typing import Any
 
 from pandas.core.frame import DataFrame
 
-class OperationsDataTable(abc.ABC):
+class OperationsData(abc.ABC):
 
     @abc.abstractmethod
     def __next__(self):
@@ -20,7 +20,7 @@ class OperationsDataTable(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def copy(self)->OperationsDataTable:
+    def copy(self)->OperationsData:
         pass
 
     @abc.abstractmethod
@@ -32,11 +32,11 @@ class OperationsDataTable(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def last_positions(self, date_limit:datetime)-> OperationsDataTable:
+    def last_positions(self, date_limit:datetime)-> OperationsData:
         pass
    
 
-class DataTableRow(abc.ABC):
+class OperationRow(abc.ABC):
 
     @abc.abstractmethod
     def index(self):

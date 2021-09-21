@@ -5,10 +5,10 @@ from pandas.core.frame import DataFrame
 from src.use_cases.interfaces.mappers import ColumnMapper
 from typing import Any, Iterable, List
 import pandas
-from src.use_cases.interfaces.datatable import OperationsDataTable, DataTableRow
+from src.use_cases.interfaces.datatable import OperationsData, OperationRow
 
 
-class DataTableRowPandas(DataTableRow):
+class OperationRowPandas(OperationRow):
     def __init__(self, index, data: datetime, ticker:str, operation:str, quantity:int, mean_price:float) -> None:
         self._index = index
         self._data = data
@@ -41,8 +41,8 @@ class FactoryRowDataTablePandas:
         self._operation_mapper = operation_mapper
         self._column_mapper = column_mapper
 
-    def create(self, index, row: pandas.Series)-> DataTableRow:
-        return DataTableRowPandas(index,
+    def create(self, index, row: pandas.Series)-> OperationRow:
+        return OperationRowPandas(index,
             row[self._column_mapper.date_column()],
             row[self._column_mapper.ticker_column()],
             self._operation_mapper[row[self._column_mapper.operation_column()]],
@@ -53,7 +53,7 @@ class FactoryRowDataTablePandas:
     def column_mapper(self)->ColumnMapper:
         return self._column_mapper
 
-class OperationsDataTablePandas(OperationsDataTable):
+class OperationsDataPandas(OperationsData):
     
     def __init__(self, df: pandas.DataFrame, row_factory: FactoryRowDataTablePandas):
         self._df:pandas.DataFrame = df
@@ -65,7 +65,7 @@ class OperationsDataTablePandas(OperationsDataTable):
     def __iter__(self):
         return self
 
-    def __next__(self)->DataTableRow:
+    def __next__(self)->OperationRow:
         self._current_index, self._current_row = next(self._get_row_iterator())
         return self._row_factory.create(self._current_index, self._current_row)
     
@@ -87,7 +87,7 @@ class OperationsDataTablePandas(OperationsDataTable):
         return self.__create_dataframe(self._df)
 
     def __create_dataframe(self, df_to_copy:DataFrame):
-        return OperationsDataTablePandas(df_to_copy.copy(), self._row_factory)
+        return OperationsDataPandas(df_to_copy.copy(), self._row_factory)
 
     def last_positions(self, date_limit:datetime=None):
         date_column = self.__column_mapper().date_column()
