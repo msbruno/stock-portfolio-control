@@ -1,5 +1,5 @@
 from typing import Any
-from src.use_cases.interfaces.datatable import OperationsData
+from src.use_cases.interfaces.datatable import OperationRow, OperationsData
 from src.use_cases.interfaces.mappers import ColumnMapper
 from src.domain.asset import Asset
 from src.domain.portfolio import Portfolio
@@ -14,7 +14,7 @@ class ProcessOperations:
     def process_operations(self, df:OperationsData)->OperationsData:
         self.__df:OperationsData = df
         for row in self.__df:
-            self._current_row = row
+            self._current_row:OperationRow = row
             operation = self.__current_operation()
             profit = self.__portfolio_mg.execute_operation(row.ticker(), operation)
             self.__update_dataframe(row.index(), profit.value())
@@ -31,7 +31,7 @@ class ProcessOperations:
     
     def __current_operation(self)-> OperationData:
         row = self._current_row
-        return OperationData(row.shares(), row.mean_price(), row.operation())
+        return OperationData(row.shares(), row.mean_price(), row.operation(), row.fees())
 
     def __update_dataframe(self, index:Any, profit:float):
         self.__df.update(index, self.__column_mapper.op_profit(), profit)

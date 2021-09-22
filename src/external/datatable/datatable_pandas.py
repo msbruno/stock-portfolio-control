@@ -118,5 +118,8 @@ class OperationsDataPandas(OperationsData):
     def print(self)->void:
         return print(self._df)
 
+    def to_dict(self)->dict:
+        return self._df.to_dict('list')
+
     
 

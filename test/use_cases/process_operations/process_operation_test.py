@@ -1,3 +1,4 @@
+from pandas._libs.tslibs.timestamps import Timestamp
 from src.external.datatable.mappers import DEFAULT_COLUMN_MAPPER, OPERATION_MAPPER
 from src.external.datatable.datatable_pandas import OperationsDataPandas, FactoryRowDataTablePandas
 from src.use_cases.process_operations.process_operations import ProcessOperations
@@ -8,13 +9,12 @@ class ProcessOperationTest(unittest.TestCase):
 
     def test_should_process_buy_operation(self):
         columns = ['data', 'ticker', 'operação', 'qtd', 'pm', 'corretagem']
-        data = [['10/10/2020', 'NET', 'COMPRA', 5, 100, 5], 
-                ['10/10/2020', 'NET', 'COMPRA', 5, 300,5], 
-                ['10/10/2020', 'NET', 'VENDA', 2, 100, 5], 
-                ['10/10/2020', 'NET', 'VENDA', 2, 100, 5], 
+        data = [['10/10/2020', 'NET', 'COMPRA', 5, 100, 5], #pm=101
+                ['10/10/2020', 'NET', 'COMPRA', 5, 300,5], #pm=201
+                ['10/10/2020', 'NET', 'VENDA', 2, 100, 2], 
+                ['10/10/2020', 'NET', 'VENDA', 2, 100, 2], 
         ]
         df = pd.DataFrame(data=data, columns=columns)
-        #TODO remove operation mapper and column mapper
         factory = FactoryRowDataTablePandas(OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER)
         data_table = OperationsDataPandas(df, factory)
 
@@ -28,33 +28,31 @@ class ProcessOperationTest(unittest.TestCase):
         asset = self.sut.portfolio_mg()._portfolio.get('NET')
         self.assertEqual('NET', asset.ticker())
         self.assertEqual(6, asset.shares())
-        self.assertEqual(200, asset.mean_price())
+        self.assertEqual(201, asset.mean_price())
         self.assertEqual(-400, asset.profit())
 
     def dataframe_should_be_uptodate(self):
         index=0 
         profit=0 
-        acc_value=500 
+        acc_value=505 
         acc_shares=5 
         acc_mean_price=acc_value/acc_shares
         acc_profit=0 
         self.verify_row_data(index, profit, acc_value, acc_shares, acc_mean_price, acc_profit)
 
         index+=1 
-        profit=0 
-        acc_value+=1500 
+        acc_value+=1505 
         acc_shares+=5 
         acc_mean_price=acc_value/acc_shares
-        acc_profit=0 
         self.verify_row_data(index, profit, acc_value, acc_shares, acc_mean_price, acc_profit)
 
-        sell = 2
-        sell_price = 100
+        shares_sold = 2
+        sell_price = 101
         index+=1 
-        acc_shares-=2 
-        acc_value = acc_value - (sell * acc_mean_price) 
+        acc_shares-=shares_sold 
+        acc_value = acc_value - (shares_sold * acc_mean_price) 
         acc_mean_price=acc_value/acc_shares
-        profit=(sell_price - acc_mean_price)  * sell  
+        profit=(sell_price - acc_mean_price)  * shares_sold  
         acc_profit+=profit
         self.verify_row_data(index, profit, acc_value, acc_shares, acc_mean_price, acc_profit)
 

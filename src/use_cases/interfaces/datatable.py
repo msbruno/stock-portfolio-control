@@ -39,6 +39,10 @@ class OperationsData(abc.ABC):
     @abc.abstractmethod
     def print(self)->void:
         pass
+
+    @abc.abstractmethod
+    def to_dict(self)->dict:
+        pass
    
 
 class OperationRow(abc.ABC):
