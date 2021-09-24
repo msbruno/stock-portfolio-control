@@ -1,10 +1,11 @@
 from __future__ import annotations
 import abc
-from datetime import datetime
+from datetime import date, datetime
 from typing import Any
 from numpy import void
-
+from dataclasses import dataclass
 from pandas.core.frame import DataFrame
+
 
 class OperationsData(abc.ABC):
 
@@ -43,37 +44,17 @@ class OperationsData(abc.ABC):
     @abc.abstractmethod
     def to_dict(self)->dict:
         pass
+
    
-
+@dataclass
 class OperationRow(abc.ABC):
-
-    @abc.abstractmethod
-    def index(self):
-        pass
-
-    @abc.abstractmethod
-    def data(self):
-        pass
-    
-    @abc.abstractmethod
-    def ticker(self):
-        pass
-
-    @abc.abstractmethod
-    def shares(self):
-        pass
-    
-    @abc.abstractmethod
-    def mean_price(self):
-        pass
-
-    @abc.abstractmethod
-    def operation(self):
-        pass
-
-    @abc.abstractmethod
-    def fees(self):
-        pass
+    index:Any
+    data: datetime
+    ticker: str
+    shares: int
+    mean_price: float
+    operation: str
+    fees:float
 
 
 class OperationsDataLoader(abc.ABC):

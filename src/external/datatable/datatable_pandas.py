@@ -9,37 +9,6 @@ from typing import Any, Iterable, List
 import pandas
 
 
-class OperationRowPandas(OperationRow):
-    def __init__(self, index, data: datetime, ticker:str, operation:str, quantity:int, mean_price:float, fees:float) -> None:
-        self._index = index
-        self._data = data
-        self._ticker = ticker
-        self._quantity = quantity
-        self._mean_price = mean_price
-        self._operation = operation
-        self._fees = fees
-
-    def index(self):
-        return self._index
-
-    def data(self):
-        return self._data
-
-    def ticker(self):
-        return self._ticker
-
-    def shares(self):
-        return self._quantity
-
-    def mean_price(self):
-        return self._mean_price
-
-    def operation(self):
-        return self._operation
-
-    def fees(self):
-        return self._fees
-
 class FactoryRowDataTablePandas:
 
     def __init__(self, operation_mapper:dict, column_mapper:ColumnMapper) -> None:
@@ -47,12 +16,12 @@ class FactoryRowDataTablePandas:
         self._column_mapper = column_mapper
 
     def create(self, index, row: pandas.Series)-> OperationRow:
-        return OperationRowPandas(index,
+        return OperationRow(index,
             row[self._column_mapper.date_column()],
             row[self._column_mapper.ticker_column()],
-            self._operation_mapper[row[self._column_mapper.operation_column()]],
             row[self._column_mapper.quantity_column()],
             row[self._column_mapper.mean_price_column()],
+            self._operation_mapper[row[self._column_mapper.operation_column()]],
             row[self._column_mapper.fees_column()]
         )
 

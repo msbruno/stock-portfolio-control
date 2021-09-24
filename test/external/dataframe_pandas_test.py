@@ -14,11 +14,11 @@ class FactoryRowDataFramePandasTest(unittest.TestCase):
 
         sut = FactoryRowDataTablePandas(OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER)
         row:OperationRow = sut.create(1, row)
-        self.assertEqual('NET', row.ticker())
-        self.assertEqual(OperationType.BUY, row.operation())
-        self.assertEqual('10/10/2020', row.data())
-        self.assertEqual(1, row.shares())
-        self.assertEqual(100, row.mean_price())
+        self.assertEqual('NET', row.ticker)
+        self.assertEqual(OperationType.BUY, row.operation)
+        self.assertEqual('10/10/2020', row.data)
+        self.assertEqual(1, row.shares)
+        self.assertEqual(100, row.mean_price)
 
     def _create_row(self, data):
         columns = ['ticker', 'operação', 'data', 'qtd', 'pm', 'corretagem']
@@ -52,15 +52,15 @@ class DataFramePandasTest(unittest.TestCase):
         sut = OperationsDataPandas(df, factory)
 
         row = next(sut)
-        self.assertEqual('NET', row.ticker())
-        self.assertEqual(OperationType.BUY, row.operation())
-        self.assertEqual('10/10/2020', row.data())
-        self.assertEqual(1, row.shares())
-        self.assertEqual(100, row.mean_price())
+        self.assertEqual('NET', row.ticker)
+        self.assertEqual(OperationType.BUY, row.operation)
+        self.assertEqual('10/10/2020', row.data)
+        self.assertEqual(1, row.shares)
+        self.assertEqual(100, row.mean_price)
         
         row = next(sut)
-        self.assertEqual('NET', row.ticker())
-        self.assertEqual(OperationType.SELL, row.operation())
-        self.assertEqual('10/10/2020', row.data())
-        self.assertEqual(1, row.shares())
-        self.assertEqual(300, row.mean_price())
+        self.assertEqual('NET', row.ticker)
+        self.assertEqual(OperationType.SELL, row.operation)
+        self.assertEqual('10/10/2020', row.data)
+        self.assertEqual(1, row.shares)
+        self.assertEqual(300, row.mean_price)

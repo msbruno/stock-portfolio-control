@@ -4,7 +4,6 @@ from test.resources.load_file import path_resource
 from src.use_cases.process_operations.process_operations import ProcessOperations
 from src.external.datatable.mappers import DEFAULT_COLUMN_MAPPER, OPERATION_MAPPER
 from src.external.datatable.datatable_pandas import FactoryRowDataTablePandas
-from src.use_cases.interfaces.mappers import ColumnMapper
 from src.use_cases.interfaces.mark_to_market import MarkToMarket
 
 import unittest
@@ -30,9 +29,9 @@ class MarkToMarketUsingYahoo(MarkToMarket):
         self._load_market_values(result, date)
 
         for row in result:
-            market_value_per_share = self.__market_value(row.ticker())
-            market_value = market_value_per_share * row.shares()
-            result.update(row.index(), "market_value", market_value)
+            market_value_per_share = self.__market_value(row.ticker)
+            market_value = market_value_per_share * row.shares
+            result.update(row.index, "market_value", market_value)
         return result
 
     def __market_value(self, ticker:str):
