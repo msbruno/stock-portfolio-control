@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from pandas.core.frame import DataFrame
 
 
-class OperationsData(abc.ABC):
+class DataTable(abc.ABC):
 
     @abc.abstractmethod
     def __next__(self):
@@ -22,7 +22,7 @@ class OperationsData(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def copy(self)->OperationsData:
+    def copy(self)->DataTable:
         pass
 
     @abc.abstractmethod
@@ -34,7 +34,7 @@ class OperationsData(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def last_positions(self, date_limit:datetime)-> OperationsData:
+    def last_positions(self, date_limit:datetime)-> DataTable:
         pass
 
     @abc.abstractmethod
@@ -57,8 +57,8 @@ class OperationRow(abc.ABC):
     fees:float
 
 
-class OperationsDataLoader(abc.ABC):
+class DataTableLoader(abc.ABC):
 
     @abc.abstractmethod
-    def load(self, path_operations:str, path_types:str)-> OperationsData:
+    def load(self, path_operations:str, path_types:str)-> DataTable:
         pass

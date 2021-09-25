@@ -1,7 +1,7 @@
-from src.external.datatable.datatable_loader import FactoryOperationsDataPandas
+from src.external.datatable.datatable_loader import FactoryDataTablePandas
 from test.resources.load_file import path_resource
 from src.domain.portfolio import Portfolio
-from src.use_cases.interfaces.datatable import OperationsData
+from src.use_cases.interfaces.datatable import DataTable
 from src.external.datatable.mappers import DEFAULT_COLUMN_MAPPER, OPERATION_MAPPER
 from src.use_cases.process_operations.process_operations import ProcessOperations
 from src.use_cases.interfaces.mappers import ColumnMapper
@@ -19,10 +19,10 @@ class MainTest(unittest.TestCase):
         
         
         row_factory = FactoryRowDataTablePandas(OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER)
-        loader = FactoryOperationsDataPandas(row_factory)
+        loader = FactoryDataTablePandas(row_factory)
         df = loader.load(path, path2)
 
         sut = ProcessOperations(DEFAULT_COLUMN_MAPPER)
-        df_result:OperationsData = sut.process_operations(df)
+        df_result:DataTable = sut.process_operations(df)
         #df_result.print()
         

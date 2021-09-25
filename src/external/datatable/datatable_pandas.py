@@ -4,7 +4,7 @@ from numpy import void
 
 from pandas.core.frame import DataFrame
 from src.use_cases.interfaces.mappers import ColumnMapper
-from src.use_cases.interfaces.datatable import OperationsData, OperationRow
+from src.use_cases.interfaces.datatable import DataTable, OperationRow
 from typing import Any, Iterable, List
 import pandas
 
@@ -28,7 +28,7 @@ class FactoryRowDataTablePandas:
     def column_mapper(self)->ColumnMapper:
         return self._column_mapper
 
-class OperationsDataPandas(OperationsData):
+class DataTablePandas(DataTable):
     
     def __init__(self, df: pandas.DataFrame, row_factory: FactoryRowDataTablePandas):
         self._df:pandas.DataFrame = df
@@ -62,7 +62,7 @@ class OperationsDataPandas(OperationsData):
         return self.__create_dataframe(self._df)
 
     def __create_dataframe(self, df_to_copy:DataFrame):
-        return OperationsDataPandas(df_to_copy.copy(), self._row_factory)
+        return DataTablePandas(df_to_copy.copy(), self._row_factory)
 
     def last_positions(self, date_limit:datetime=None):
         date_column = self.__column_mapper().date_column()

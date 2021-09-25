@@ -1,7 +1,7 @@
 from src.external.datatable.mappers import OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER
 from src.use_cases.process_operations.portfolio_manager import OperationType
 from src.use_cases.interfaces.datatable import OperationRow
-from src.external.datatable.datatable_pandas import OperationsDataPandas, FactoryRowDataTablePandas
+from src.external.datatable.datatable_pandas import DataTablePandas, FactoryRowDataTablePandas
 import unittest
 import pandas as pd
 
@@ -36,7 +36,7 @@ class DataFramePandasTest(unittest.TestCase):
         ]
         df = pd.DataFrame(data=data, columns=columns)
         factory = FactoryRowDataTablePandas(OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER)
-        sut = OperationsDataPandas(df, factory)
+        sut = DataTablePandas(df, factory)
 
         for x in sut:
             pass
@@ -49,7 +49,7 @@ class DataFramePandasTest(unittest.TestCase):
         ]
         df = pd.DataFrame(data=data, columns=columns)
         factory = FactoryRowDataTablePandas(OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER)
-        sut = OperationsDataPandas(df, factory)
+        sut = DataTablePandas(df, factory)
 
         row = next(sut)
         self.assertEqual('NET', row.ticker)
