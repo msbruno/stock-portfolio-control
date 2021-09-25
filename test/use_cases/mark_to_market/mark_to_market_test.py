@@ -17,6 +17,8 @@ yf.pdr_override()
 class MarkToMarketUsingYahoo(MarkToMarket):
 
     def _load_market_values(self, dt: DataTable, date:datetime):
+        if date is None:
+            date = datetime.datetime.now()
         date_filter = date + datetime.timedelta(days=1)
         tickers = dt.get_all_tickes()
         if len(tickers) == 0:
