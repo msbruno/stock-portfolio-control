@@ -55,6 +55,6 @@ class MarkToMarketUsingYahooTest(unittest.TestCase):
         df_processed:OperationsData = sut.process_operations(df)
 
         marker = MarkToMarketUsingYahoo()
-        filter = datetime.strptime('12/10/2020', '%d/%m/%Y')
+        filter = datetime.datetime.strptime('12/10/2020', '%d/%m/%Y')
         result = marker.mark_to_market(df_processed, filter)
         result.print()
