@@ -1,3 +1,4 @@
+from datetime import datetime
 from test.use_cases.mark_to_market.mark_to_market_test import MarkToMarketUsingYahoo
 from test.resources.load_file import path_resource
 from src.external.datatable.datatable_loader import FactoryOperationsDataPandas
@@ -21,5 +22,9 @@ class TreatDataframe(unittest.TestCase):
         path_operations = path_resource('portfolio.csv')
         path_types = path_resource('portfolio_type.csv')
         generate.load(path_operations, path_types)
-        data = generate.portfolio_marked_to_market()
-        data.print()
+        data = generate.portfolio_marked_to_market(datetime.strptime("23/09/2021", "%d/%m/%Y"))
+        #data.print()
+        result = data.to_dict()
+        print(result)
+        self.assertEqual(345.96, round(result['FB']['market_value'],2))
+        self.assertEqual(135.67, round(result['NET']['market_value'],2))

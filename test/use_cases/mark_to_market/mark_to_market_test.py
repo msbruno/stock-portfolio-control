@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 from src.external.datatable.datatable_loader import FactoryOperationsDataPandas
 from test.resources.load_file import path_resource
 from src.use_cases.process_operations.process_operations import ProcessOperations
@@ -17,10 +17,11 @@ yf.pdr_override()
 class MarkToMarketUsingYahoo(MarkToMarket):
 
     def _load_market_values(self, dt: OperationsData, date:datetime):
+        date_filter = date + datetime.timedelta(days=1)
         tickers = dt.get_all_tickes()
         if len(tickers) == 0:
             raise Exception("There are no tickers to mark portfolio to market. Insert a new date or operation table.")
-        last_market_value = web.get_data_yahoo(tickers, end=date)['Close']
+        last_market_value = web.get_data_yahoo(tickers, end=date_filter)['Close']
         self.__last_market_value = last_market_value.fillna(method='ffill')
 
     

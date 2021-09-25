@@ -88,7 +88,10 @@ class OperationsDataPandas(OperationsData):
         return print(self._df)
 
     def to_dict(self)->dict:
-        return self._df.to_dict('list')
+        ticker_column = self.__column_mapper().ticker_column()
+        result = self._df.copy()
+        result = result.set_index(ticker_column)
+        return result.to_dict('index')
 
     
 
