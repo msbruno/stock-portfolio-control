@@ -20,3 +20,4 @@ class GeneratePositionsReportTest(unittest.TestCase):
         path_types = path_resource('portfolio_type.csv')
         generate_report.generate_report(path_operations, path_types)
         self.assertEqual(0,0)
+    
