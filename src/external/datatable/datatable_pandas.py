@@ -3,36 +3,27 @@ from datetime import datetime
 from numpy import void
 
 from pandas.core.frame import DataFrame
-from src.use_cases.interfaces.mappers import ColumnMapper
-from src.use_cases.interfaces.datatable import DataTable, OperationRow
+from src.use_cases.interfaces.datatable import DataTable, Row
 from typing import Any, Iterable, List
 import pandas
 
 
-class FactoryRowDataTablePandas:
+class RowPandas(Row):
 
-    def __init__(self, operation_mapper:dict, column_mapper:ColumnMapper) -> None:
-        self._operation_mapper = operation_mapper
-        self._column_mapper = column_mapper
+    def __init__(self, index, row: pandas.Series):
+        self.__index = index
+        self.__row:pandas.Series = row
 
-    def create(self, index, row: pandas.Series)-> OperationRow:
-        return OperationRow(index,
-            row[self._column_mapper.date_column()],
-            row[self._column_mapper.ticker_column()],
-            row[self._column_mapper.quantity_column()],
-            row[self._column_mapper.mean_price_column()],
-            self._operation_mapper[row[self._column_mapper.operation_column()]],
-            row[self._column_mapper.fees_column()]
-        )
+    def __getitem__(self,column:str)->Any:
+        if column == 'index':
+            return self.__index
+        return  self.__row[column]
 
-    def column_mapper(self)->ColumnMapper:
-        return self._column_mapper
 
 class DataTablePandas(DataTable):
     
-    def __init__(self, df: pandas.DataFrame, row_factory: FactoryRowDataTablePandas):
+    def __init__(self, df: pandas.DataFrame):
         self._df:pandas.DataFrame = df
-        self._row_factory = row_factory
         self._row_iterator:Iterable = None
         self._current_row = None
         self._current_index = None
@@ -40,18 +31,15 @@ class DataTablePandas(DataTable):
     def __iter__(self):
         return self
 
-    def __next__(self)->OperationRow:
+    def __next__(self)->Row:
         self._current_index, self._current_row = next(self._get_row_iterator())
-        return self._row_factory.create(self._current_index, self._current_row)
+        return RowPandas(self._current_index, self._current_row)
     
     def _get_row_iterator(self):
         if self._row_iterator is None:
             self._row_iterator = self._df.iterrows()
         return self._row_iterator
     
-    def __column_mapper(self):
-        return self._row_factory.column_mapper()
-
     def current_row(self):
         return self.current_row
 
@@ -62,36 +50,41 @@ class DataTablePandas(DataTable):
         return self.__create_dataframe(self._df)
 
     def __create_dataframe(self, df_to_copy:DataFrame):
-        return DataTablePandas(df_to_copy.copy(), self._row_factory)
+        return DataTablePandas(df_to_copy.copy())
 
-    def last_positions(self, date_limit:datetime=None):
-        date_column = self.__column_mapper().date_column()
-        ticker_column = self.__column_mapper().ticker_column()
-        acc_shares_column = self.__column_mapper().acc_shares()
+    def limit_date(self, date_column:str, date_limit:datetime)->DataTable:
         result = self._df.copy()
-        
         if date_limit is not None:
             result = result[result[date_column] <= date_limit]
-        result = result.groupby(ticker_column).tail(1)
-        result = result[result[acc_shares_column]>0]
+        return self.__create_dataframe(result) 
+
+    def last_group_by(self, column:str)->DataTable:
+        result = self._df.copy()
+        result = result.groupby(column).tail(1)
+        return self.__create_dataframe(result)
+
+    def greater_than_zero(self, column:str)->DataTable:
+        result = self._df.copy()
+        result = result[result[column]>0]
         return self.__create_dataframe(result)
     
-    def get_all_tickes(self)->List:
-        ticker_column = self.__column_mapper().ticker_column()
-        return self._df[ticker_column].tolist()
+    def unique(self, column:str)->List:
+        return self._df[column].unique().tolist()
 
-    
-    def first_date(self)->datetime:
-        return self._df.iloc[0][self.__column_mapper().date_column()]
+    def first(self, column:str)->datetime:
+        return self._df.iloc[0][column]
 
     def print(self)->void:
         return print(self._df)
 
-    def to_dict(self)->dict:
-        ticker_column = self.__column_mapper().ticker_column()
+    def to_dict(self, index_column:str=None)->dict:
         result = self._df.copy()
-        result = result.set_index(ticker_column)
+        if index_column is not None:
+            result = result.set_index(index_column)
         return result.to_dict('index')
+    
+    def to_json(self)->dict:
+        return self._df.to_json(orient="index")
 
     
 

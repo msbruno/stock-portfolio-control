@@ -1,10 +1,9 @@
 from __future__ import annotations
 import abc
-from datetime import date, datetime
-from typing import Any
+from datetime import datetime
+from typing import Any, List
+
 from numpy import void
-from dataclasses import dataclass
-from pandas.core.frame import DataFrame
 
 
 class DataTable(abc.ABC):
@@ -24,37 +23,46 @@ class DataTable(abc.ABC):
     @abc.abstractmethod
     def copy(self)->DataTable:
         pass
-
+    
     @abc.abstractmethod
-    def get_all_tickes(self)->list:
+    def limit_date(self, date_column:str, date_limit:datetime)->DataTable:
         pass
-
+    
     @abc.abstractmethod
-    def first_date(self)->datetime:
+    def last_group_by(self, column:str)->DataTable:
         pass
-
+    
     @abc.abstractmethod
-    def last_positions(self, date_limit:datetime)-> DataTable:
+    def greater_than_zero(self, column:str)->DataTable:
+        pass
+    
+    @abc.abstractmethod
+    def unique(self, column:str)->List:
+       pass
+    
+    @abc.abstractmethod
+    def first(self, column:str)->DataTable:
         pass
 
     @abc.abstractmethod
     def print(self)->void:
         pass
+    
+    @abc.abstractmethod
+    def to_dict(self, index_column:str)->dict:
+        pass
 
     @abc.abstractmethod
-    def to_dict(self)->dict:
+    def to_json(self)->dict:
         pass
 
    
-@dataclass
-class OperationRow(abc.ABC):
-    index:Any
-    data: datetime
-    ticker: str
-    shares: int
-    mean_price: float
-    operation: str
-    fees:float
+
+class Row(abc.ABC):
+
+    abc.abstractmethod
+    def __getitem__(self,column:str)->Any:
+        pass
 
 
 class DataTableLoader(abc.ABC):

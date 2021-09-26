@@ -1,6 +1,6 @@
 from pandas._libs.tslibs.timestamps import Timestamp
 from src.external.datatable.mappers import DEFAULT_COLUMN_MAPPER, OPERATION_MAPPER
-from src.external.datatable.datatable_pandas import DataTablePandas, FactoryRowDataTablePandas
+from src.external.datatable.datatable_pandas import DataTablePandas
 from src.use_cases.process_operations.process_operations import ProcessOperations
 import unittest
 import pandas as pd
@@ -15,8 +15,7 @@ class ProcessOperationTest(unittest.TestCase):
                 ['10/10/2020', 'NET', 'VENDA', 2, 100, 2], 
         ]
         df = pd.DataFrame(data=data, columns=columns)
-        factory = FactoryRowDataTablePandas(OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER)
-        data_table = DataTablePandas(df, factory)
+        data_table = DataTablePandas(df)
 
         self.sut = ProcessOperations(DEFAULT_COLUMN_MAPPER)
         self.df_result:DataTablePandas = self.sut.process_operations(data_table)

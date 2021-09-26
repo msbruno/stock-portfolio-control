@@ -1,12 +1,12 @@
-from src.external.datatable.datatable_pandas import FactoryRowDataTablePandas, DataTablePandas
+from src.use_cases.interfaces.mappers import ColumnMapper
+from src.external.datatable.datatable_pandas import DataTablePandas
 from src.use_cases.interfaces.datatable import DataTable, DataTableLoader
 import pandas as pd
 
 class FactoryDataTablePandas(DataTableLoader):
 
-    def __init__(self, factory_row: FactoryRowDataTablePandas, csv_separator:str=';', data_format:str='%d/%m/%Y', ) -> None:
-        self.__factory_row = factory_row
-        self.__column_mapper = factory_row.column_mapper()
+    def __init__(self, column_mapper:ColumnMapper, csv_separator:str=';', data_format:str='%d/%m/%Y', ) -> None:
+        self.__column_mapper = column_mapper
         self.__csv_separator = csv_separator
         self.__data_format = data_format
 
@@ -16,7 +16,7 @@ class FactoryDataTablePandas(DataTableLoader):
         df_operations_pd = self.__order_bydata(df_operations_pd)
         df_types_pd = self.__load(path_types)
         self.__current_df = pd.merge(df_operations_pd, df_types_pd, how="left", on=self.__column_mapper.ticker_column())
-        return DataTablePandas(self.__current_df, self.__factory_row)
+        return DataTablePandas(self.__current_df)
 
     def __order_bydata(self, df_operations_pd):
         return df_operations_pd.sort_values(self.__column_mapper.date_column())
