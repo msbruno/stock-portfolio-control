@@ -7,9 +7,7 @@ import pandas
 from pandas.io import json
 from src.use_cases.interfaces.mappers import ColumnMapper
 from src.use_cases.generate_portfolio_market_to_market.generate_portfolio_market_to_market import GeneratePortfolioMarkedToMarket
-from src.use_cases.interfaces.mark_to_market import MarkToMarket
-from src.use_cases.process_operations.process_operations import ProcessOperations
-from src.use_cases.interfaces.datatable import DataTable, DataTableLoader
+from src.use_cases.interfaces.datatable import DataTable
 import plotly.express as px
 
 class PrinterPortfolioPosition(abc.ABC):
