@@ -11,27 +11,25 @@ from src.use_cases.process_operations.process_operations import ProcessOperation
 from src.external.datatable.mappers import DEFAULT_COLUMN_MAPPER
 
 
-def load_operations(path:str, path_types:str, separator:str=None, data_format:str=None):
+def process_operations(path_operations:str, path_types:str, separator:str=None, data_format:str=None)->DataTable:
     factory = FactoryDataTablePandas(DEFAULT_COLUMN_MAPPER, separator, data_format)
-    return factory.load(path_operations, path_types)
+    data = factory.load(path_operations, path_types)
+    processor = ProcessOperations(DEFAULT_COLUMN_MAPPER)
+    return processor.process_operations(data)
 
-def generate_portfolio_marked_to_market(path:str, path_types:str):
-    process_ops = ProcessOperations(DEFAULT_COLUMN_MAPPER)
-    dt_loader = FactoryDataTablePandas(DEFAULT_COLUMN_MAPPER)
-    generate_portfolio = GeneratePortfolioMarkedToMarket(process_ops, dt_loader, MarkToMarketUsingYahoo())
-    return generate_portfolio.load(path, path_types).portfolio_marked_to_market()
+def generate_portfolio_marked_to_market(operations:DataTable, date_filter:datetime=None):
+    generate_portfolio = GeneratePortfolioMarkedToMarket(MarkToMarketUsingYahoo(DEFAULT_COLUMN_MAPPER), DEFAULT_COLUMN_MAPPER)
+    return generate_portfolio.portfolio_marked_to_market(operations, date_filter)
 
 def print_portfolio_positions(data:DataTable):
-    printer = PrinterPortfolioPositionPlotly(DEFAULT_COLUMN_MAPPER)
-    printer.print_positions(data)
-
+    printer = PrinterPortfolioPositionPlotly()
+    printer.print_type(data, DEFAULT_COLUMN_MAPPER.ticker_column(), DEFAULT_COLUMN_MAPPER.acc_value())
 
 
 path_operations = path_resource('portfolio.csv')
 path_types = path_resource('portfolio_type.csv')
-data = load_operations(path_operations, path_types)
-
-data = generate_portfolio_marked_to_market(path_operations, path_types)
+data = process_operations(path_operations, path_types)
+data = generate_portfolio_marked_to_market(data)
 print_portfolio_positions(data)
 
 

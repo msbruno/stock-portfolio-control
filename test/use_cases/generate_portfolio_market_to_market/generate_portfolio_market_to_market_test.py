@@ -11,7 +11,7 @@ import unittest
 class TreatDataframe(unittest.TestCase):
 
     def test(self):
-        generate = GeneratePortfolioMarkedToMarket(MarkToMarketUsingYahoo(DEFAULT_COLUMN_MAPPER))
+        generate = GeneratePortfolioMarkedToMarket(MarkToMarketUsingYahoo(DEFAULT_COLUMN_MAPPER), DEFAULT_COLUMN_MAPPER)
         data = generate.portfolio_marked_to_market(self.operations(), datetime.strptime("23/09/2021", "%d/%m/%Y"))
         result = data.to_dict(DEFAULT_COLUMN_MAPPER.ticker_column())
         print(result)

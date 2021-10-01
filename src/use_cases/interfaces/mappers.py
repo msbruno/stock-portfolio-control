@@ -9,13 +9,17 @@ class ColumnMapper:
     operation:str='operation', 
     quantity:str='quantity', 
     mean_price:str='mean_price', 
-    fees:str='fees') -> None:
+    fees:str='fees',
+    currency_conversion_rate:str='currency',
+    market_value:str='market_value') -> None:
         self.__data = date
         self.__ticker = ticker
         self.__operation = operation
         self.__quantity = quantity
         self.__mean_price = mean_price
         self.__fees = fees
+        self.__currency_conversion_rate = currency_conversion_rate
+        self.__market_value = market_value
 
     def date_column(self):
         return self.__data
@@ -49,3 +53,9 @@ class ColumnMapper:
 
     def acc_profit(self):
         return 'acc profit'
+
+    def currency_conversion_rate_column(self):
+        return self.__currency_conversion_rate
+    
+    def market_value_column(self):
+        return self.__market_value

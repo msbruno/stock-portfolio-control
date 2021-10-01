@@ -37,7 +37,6 @@ class ProcessOperations:
         mean_price = self.__column_mapper.mean_price_column()
         operation =  self.__column_mapper.operation_column()
         fees = self.__column_mapper.fees_column()
-
         return OperationData(row[shares], row[mean_price], self.__operation_mapper[row[operation]], row[fees])
 
     def __update_dataframe(self, index:Any, profit:float):
