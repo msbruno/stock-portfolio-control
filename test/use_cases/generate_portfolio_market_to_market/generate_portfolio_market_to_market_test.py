@@ -11,18 +11,15 @@ import unittest
 class TreatDataframe(unittest.TestCase):
 
     def test(self):
-
-        
-        process_ops = ProcessOperations(DEFAULT_COLUMN_MAPPER)
-        factory = FactoryDataTablePandas(DEFAULT_COLUMN_MAPPER)
-        generate = GeneratePortfolioMarkedToMarket(process_ops, factory, MarkToMarketUsingYahoo())
-        
-        path_operations = path_resource('portfolio.csv')
-        path_types = path_resource('portfolio_type.csv')
-        generate.load(path_operations, path_types)
-        data = generate.portfolio_marked_to_market(datetime.strptime("23/09/2021", "%d/%m/%Y"))
-        #data.print()
+        generate = GeneratePortfolioMarkedToMarket(MarkToMarketUsingYahoo(DEFAULT_COLUMN_MAPPER))
+        data = generate.portfolio_marked_to_market(self.operations(), datetime.strptime("23/09/2021", "%d/%m/%Y"))
         result = data.to_dict(DEFAULT_COLUMN_MAPPER.ticker_column())
         print(result)
         self.assertEqual(345.96, round(result['FB']['market_value'],2))
         self.assertEqual(135.67, round(result['NET']['market_value'],2))
+
+    def operations(self):
+        path_operations = path_resource('portfolio.csv')
+        path_types = path_resource('portfolio_type.csv')
+        factory = FactoryDataTablePandas(DEFAULT_COLUMN_MAPPER)
+        return factory.load(path_operations, path_types)
