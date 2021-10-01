@@ -15,8 +15,9 @@ class TreatDataframe(unittest.TestCase):
         data = generate.portfolio_marked_to_market(self.operations(), datetime.strptime("23/09/2021", "%d/%m/%Y"))
         result = data.to_dict(DEFAULT_COLUMN_MAPPER.ticker_column())
         print(result)
-        self.assertEqual(345.96, round(result['FB']['market_value'],2))
-        self.assertEqual(135.67, round(result['NET']['market_value'],2))
+        market_value_column = DEFAULT_COLUMN_MAPPER.market_value_column()
+        self.assertEqual(345.96, round(result['FB'][market_value_column],2))
+        self.assertEqual(135.67, round(result['NET'][market_value_column],2))
 
     def operations(self):
         path_operations = path_resource('portfolio.csv')
