@@ -1,6 +1,7 @@
 
 
 from datetime import datetime
+from src.use_cases.convert_currency.convert_currency import ConvertCurrency
 from src.use_cases.interfaces.datatable import DataTable
 from test.resources.load_file import path_resource
 from src.use_cases.report.generate_report_positions.generate_report_positions import PrinterPortfolioPositionPlotly
@@ -21,17 +22,24 @@ def generate_portfolio_marked_to_market(operations:DataTable, date_filter:dateti
     generate_portfolio = GeneratePortfolioMarkedToMarket(MarkToMarketUsingYahoo(DEFAULT_COLUMN_MAPPER), DEFAULT_COLUMN_MAPPER)
     return generate_portfolio.portfolio_marked_to_market(operations, date_filter)
 
+def generate_portfolio_marked_to_market_adjusted_by_currency(data:DataTable):
+    currency_converter = ConvertCurrency(DEFAULT_COLUMN_MAPPER)
+    return currency_converter.convert(data)
+
 def print_portfolio_positions(data:DataTable):
     printer = PrinterPortfolioPositionPlotly()
     printer.print_type(data, DEFAULT_COLUMN_MAPPER.ticker_column(), DEFAULT_COLUMN_MAPPER.acc_value())
 
 
+
+
 path_operations = path_resource('portfolio.csv')
 path_types = path_resource('portfolio_type.csv')
-data = process_operations(path_operations, path_types)
-data = generate_portfolio_marked_to_market(data)
-print_portfolio_positions(data)
-
+data_operations = process_operations(path_operations, path_types)
+data_porfolio = generate_portfolio_marked_to_market(data_operations)
+print_portfolio_positions(data_operations)
+data_porfolio = generate_portfolio_marked_to_market_adjusted_by_currency(data_operations)
+print_portfolio_positions(data_porfolio)
 
 '''
 data = LoadOperations(x,y)

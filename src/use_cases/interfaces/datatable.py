@@ -55,7 +55,10 @@ class DataTable(abc.ABC):
     @abc.abstractmethod
     def to_json(self)->dict:
         pass
-
+    
+    @abc.abstractmethod
+    def multiply(self, column_result:str, column1:str, column2:str):
+        pass
    
 
 class Row(abc.ABC):

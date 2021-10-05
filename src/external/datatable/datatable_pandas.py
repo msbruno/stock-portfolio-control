@@ -35,6 +35,9 @@ class DataTablePandas(DataTable):
         self._current_index, self._current_row = next(self._get_row_iterator())
         return RowPandas(self._current_index, self._current_row)
     
+    def __getitem__(self, column):
+         return self._df[column]
+    
     def _get_row_iterator(self):
         if self._row_iterator is None:
             self._row_iterator = self._df.iterrows()
@@ -85,6 +88,10 @@ class DataTablePandas(DataTable):
     
     def to_json(self)->dict:
         return self._df.to_json(orient="index")
+
+    def multiply(self, column_result:str, column1:str, column2:str):
+        self._df[column_result] = self._df[column1] * self._df[column2]
+
 
     
 

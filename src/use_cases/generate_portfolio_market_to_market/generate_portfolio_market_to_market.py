@@ -24,3 +24,4 @@ class GeneratePortfolioMarkedToMarket:
             market_value = market_value_per_share * row[self.__column_mapper.quantity_column()]
             result.update(row['index'], self.__column_mapper.market_value_column(), market_value)
         return result
+        
