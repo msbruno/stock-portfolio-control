@@ -1,5 +1,5 @@
 from pandas._libs.tslibs.timestamps import Timestamp
-from src.external.datatable.mappers import DEFAULT_COLUMN_MAPPER, OPERATION_MAPPER
+from src.external.datatable.mappers import DEFAULT_COLUMN_MAPPER_BR, OPERATION_MAPPER
 from src.external.datatable.datatable_pandas import DataTablePandas
 from src.use_cases.process_operations.process_operations import ProcessOperations
 import unittest
@@ -17,7 +17,7 @@ class ProcessOperationTest(unittest.TestCase):
         df = pd.DataFrame(data=data, columns=columns)
         data_table = DataTablePandas(df)
 
-        self.sut = ProcessOperations(DEFAULT_COLUMN_MAPPER)
+        self.sut = ProcessOperations(DEFAULT_COLUMN_MAPPER_BR)
         self.df_result:DataTablePandas = self.sut.process_operations(data_table)
         self.operations_should_correctly_impact_asset()
         self.dataframe_should_be_uptodate()
@@ -57,8 +57,8 @@ class ProcessOperationTest(unittest.TestCase):
 
     def verify_row_data(self, index, profit, acc_value, acc_shares, acc_mean_price, acc_profit):
         _row = self.df_result._df.iloc[index]
-        self.assertEqual(profit,_row[DEFAULT_COLUMN_MAPPER.op_profit()])
-        self.assertEqual(acc_value,_row[DEFAULT_COLUMN_MAPPER.acc_value()])
-        self.assertEqual(acc_shares,_row[DEFAULT_COLUMN_MAPPER.acc_shares()])
-        self.assertEqual(acc_mean_price,_row[DEFAULT_COLUMN_MAPPER.acc_mean_price()])
-        self.assertEqual(acc_profit,_row[DEFAULT_COLUMN_MAPPER.acc_profit()])
+        self.assertEqual(profit,_row[DEFAULT_COLUMN_MAPPER_BR.op_profit()])
+        self.assertEqual(acc_value,_row[DEFAULT_COLUMN_MAPPER_BR.acc_value()])
+        self.assertEqual(acc_shares,_row[DEFAULT_COLUMN_MAPPER_BR.acc_shares()])
+        self.assertEqual(acc_mean_price,_row[DEFAULT_COLUMN_MAPPER_BR.acc_mean_price()])
+        self.assertEqual(acc_profit,_row[DEFAULT_COLUMN_MAPPER_BR.acc_profit()])

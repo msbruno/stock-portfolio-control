@@ -1,16 +1,30 @@
-from src.external.datatable.mappers import OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER
+from src.external.datatable.datatable_loader import FactoryDataTablePandas
+from src.external.datatable.mappers import DEFAULT_COLUMN_MAPPER_EN, OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER_BR
 from src.use_cases.process_operations.portfolio_manager import OperationType
 from src.use_cases.interfaces.datatable import Row
 from src.external.datatable.datatable_pandas import DataTablePandas, RowPandas
 import unittest
 import pandas as pd
 
+class FactoryDataTablePandasTest(unittest.TestCase):
 
-class FactoryRowdateFramePandasTest(unittest.TestCase):
+    def test_should_convert_columns_correctly(self):
+        columns = ['ticker', 'operation', 'date', 'qt', 'mp', 'fee']
+        data = [['NET', 'BUY', '10/10/2020', 1, 100, 1], 
+                ['NET', 'BUY', '10/10/2020', 1, 300, 0], 
+        ]
+        df = pd.DataFrame(data=data, columns=columns)
+        sut = FactoryDataTablePandas(DEFAULT_COLUMN_MAPPER_EN, ';', '%d/%m/%Y')
+        result = sut.wrap(df)
+        print(result['mp'])
+        
+
+
+class RowPandasTest(unittest.TestCase):
 
     def test_should_create_correctly(self):
-        date = ['NET', 'BUY', '10/10/2020', 1, 100, 1]
-        row = self._create_row(date)
+        data = ['NET', 'BUY', '10/10/2020', 1, 100, 1]
+        row = self._create_row(data)
 
         row:Row = RowPandas(1, row)
         self.assertEqual('NET', row['ticker'])
@@ -19,21 +33,21 @@ class FactoryRowdateFramePandasTest(unittest.TestCase):
         self.assertEqual(1, row['qtd'])
         self.assertEqual(100, row['pm'])
 
-    def _create_row(self, date):
+    def _create_row(self, data):
         columns = ['ticker', 'operation', 'date', 'qtd', 'pm', 'fees']
-        date = [date]
-        df = pd.DataFrame(data=date, columns=columns)
+        data = [data]
+        df = pd.DataFrame(data=data, columns=columns)
         row = df.iloc[0]
         return row
 
-class dateFramePandasTest(unittest.TestCase):
+class DataTablePandasTest(unittest.TestCase):
 
     def test_should_be_iterable(self):
         columns = ['ticker', 'operation', 'date', 'qtd', 'pm', 'fees']
-        date = [['NET', 'BUY', '10/10/2020', 1, 100, 1], 
+        data = [['NET', 'BUY', '10/10/2020', 1, 100, 1], 
                 ['NET', 'BUY', '10/10/2020', 1, 300, 0], 
         ]
-        df = pd.DataFrame(data=date, columns=columns)
+        df = pd.DataFrame(data=data, columns=columns)
         sut = DataTablePandas(df)
 
         for x in sut:
@@ -42,10 +56,10 @@ class dateFramePandasTest(unittest.TestCase):
     def test_should_create_correctly(self):
 
         columns = ['ticker', 'operation', 'date', 'qtd', 'pm', 'fees']
-        date = [['NET', 'BUY', '10/10/2020', 1, 100, 1], 
+        data = [['NET', 'BUY', '10/10/2020', 1, 100, 1], 
                 ['NET', 'SELL', '10/10/2020', 1, 300, 0], 
         ]
-        df = pd.DataFrame(data=date, columns=columns)
+        df = pd.DataFrame(data=data, columns=columns)
         sut = DataTablePandas(df)
 
         row = next(sut)

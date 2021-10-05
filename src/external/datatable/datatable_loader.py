@@ -10,13 +10,18 @@ class FactoryDataTablePandas(DataTableLoader):
         self.__csv_separator = csv_separator
         self.__data_format = data_format
 
+    def wrap(self, dataframe:pd.DataFrame):
+        result = self.__convert_to_datetime(dataframe)
+        result = self.__order_bydata(result)
+        return DataTablePandas(result)
+
     def load(self, path_operations:str, path_types:str)-> DataTable:
         df_operations_pd = self.__load(path_operations)
-        df_operations_pd = self.__convert_to_datetime(df_operations_pd)
-        df_operations_pd = self.__order_bydata(df_operations_pd)
         df_types_pd = self.__load(path_types)
-        self.__current_df = pd.merge(df_operations_pd, df_types_pd, how="left", on=self.__column_mapper.ticker_column())
-        return DataTablePandas(self.__current_df)
+        result = pd.merge(df_operations_pd, df_types_pd, how="left", on=self.__column_mapper.ticker_column())
+        result = self.__convert_to_datetime(result)
+        result = self.__order_bydata(result)
+        return DataTablePandas(result)
 
     def __order_bydata(self, df_operations_pd):
         return df_operations_pd.sort_values(self.__column_mapper.date_column())
