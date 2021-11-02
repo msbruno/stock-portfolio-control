@@ -17,7 +17,7 @@ class MarkToMarketUsingYahoo(MarkToMarket):
         if date is None:
             date = datetime.datetime.now()
         date_filter = date + datetime.timedelta(days=1)
-        tickers = dt.unique(self.__column_mapper.ticker_column())
+        tickers = dt.unique(self.__column_mapper.ticker())
         if len(tickers) == 0:
             raise Exception("There are no tickers to mark portfolio to market. Insert a new date or operation table.")
         last_market_value = web.get_data_yahoo(tickers, end=date_filter)['Close']

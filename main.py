@@ -28,8 +28,7 @@ def generate_portfolio_marked_to_market_adjusted_by_currency(data:DataTable):
 
 def print_portfolio_positions(data:DataTable):
     printer = PrinterPortfolioPositionPlotly()
-    printer.print_type(data, DEFAULT_COLUMN_MAPPER_BR.ticker_column(), DEFAULT_COLUMN_MAPPER_BR.acc_value())
-
+    printer.print_type(data, DEFAULT_COLUMN_MAPPER_BR.ticker(), DEFAULT_COLUMN_MAPPER_BR.acc_value())
 
 
 

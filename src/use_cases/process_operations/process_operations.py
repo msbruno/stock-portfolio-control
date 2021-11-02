@@ -18,7 +18,7 @@ class ProcessOperations:
         for row in self.__df:
             self._current_row:Row = row
             operation = self.__current_operation()
-            profit = self.__portfolio_mg.execute_operation(row[self.__column_mapper.ticker_column()], operation)
+            profit = self.__portfolio_mg.execute_operation(row[self.__column_mapper.ticker()], operation)
             self.__update_dataframe(self._current_row['index'], profit.value())
         return self.df()
 
@@ -29,14 +29,14 @@ class ProcessOperations:
         return self.__portfolio_mg
 
     def _current_asset(self)-> Asset:
-        return self.__portfolio_mg.asset(self._current_row[self.__column_mapper.ticker_column()])
+        return self.__portfolio_mg.asset(self._current_row[self.__column_mapper.ticker()])
     
     def __current_operation(self)-> OperationData:
         row = self._current_row
-        shares = self.__column_mapper.quantity_column()
-        mean_price = self.__column_mapper.mean_price_column()
-        operation =  self.__column_mapper.operation_column()
-        fees = self.__column_mapper.fees_column()
+        shares = self.__column_mapper.quantity()
+        mean_price = self.__column_mapper.mean_price()
+        operation =  self.__column_mapper.operation()
+        fees = self.__column_mapper.fees()
         return OperationData(row[shares], row[mean_price], self.__operation_mapper[row[operation]], row[fees])
 
     def __update_dataframe(self, index:Any, profit:float):

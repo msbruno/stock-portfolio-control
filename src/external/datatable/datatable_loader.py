@@ -18,16 +18,16 @@ class FactoryDataTablePandas(DataTableLoader):
     def load(self, path_operations:str, path_types:str)-> DataTable:
         df_operations_pd = self.__load(path_operations)
         df_types_pd = self.__load(path_types)
-        result = pd.merge(df_operations_pd, df_types_pd, how="left", on=self.__column_mapper.ticker_column())
+        result = pd.merge(df_operations_pd, df_types_pd, how="left", on=self.__column_mapper.ticker())
         result = self.__convert_to_datetime(result)
         result = self.__order_bydata(result)
         return DataTablePandas(result)
 
     def __order_bydata(self, df_operations_pd):
-        return df_operations_pd.sort_values(self.__column_mapper.date_column())
+        return df_operations_pd.sort_values(self.__column_mapper.date())
 
     def __convert_to_datetime(self, df_operations_pd):
-        df_operations_pd[self.__column_mapper.date_column()] = pd.to_datetime(df_operations_pd[self.__column_mapper.date_column()], format=self.__data_format)
+        df_operations_pd[self.__column_mapper.date()] = pd.to_datetime(df_operations_pd[self.__column_mapper.date()], format=self.__data_format)
         return df_operations_pd
 
     def __load(self, path):

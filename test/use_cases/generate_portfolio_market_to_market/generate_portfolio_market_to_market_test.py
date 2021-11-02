@@ -12,9 +12,9 @@ class TreatDataframe(unittest.TestCase):
     def test_mark_to_market(self):
         generate = GeneratePortfolioMarkedToMarket(MarkToMarketUsingYahoo(DEFAULT_COLUMN_MAPPER_BR), DEFAULT_COLUMN_MAPPER_BR)
         data = generate.portfolio_marked_to_market(self.operations(), datetime.strptime("23/09/2021", "%d/%m/%Y"))
-        result = data.to_dict(DEFAULT_COLUMN_MAPPER_BR.ticker_column())
+        result = data.to_dict(DEFAULT_COLUMN_MAPPER_BR.ticker())
         print(result)
-        market_value_column = DEFAULT_COLUMN_MAPPER_BR.market_value_column()
+        market_value_column = DEFAULT_COLUMN_MAPPER_BR.market_value()
        
 
         self.assertEqual(691.92, round(result['FB'][market_value_column],2))

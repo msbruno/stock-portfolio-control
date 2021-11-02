@@ -9,7 +9,7 @@ class ConvertCurrency:
         self.column_mapper = column_mapper
 
     def convert(self, data_operations: DataTable)->DataTable:
-        data_operations.multiply(self.column_mapper.mean_price_column(), 
-                                 self.column_mapper.mean_price_column(),
-                                 self.column_mapper.currency_conversion_rate_column())
+        data_operations.multiply(self.column_mapper.mean_price(), 
+                                 self.column_mapper.mean_price(),
+                                 self.column_mapper.currency())
         return data_operations
