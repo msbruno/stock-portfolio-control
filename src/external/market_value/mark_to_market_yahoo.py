@@ -1,6 +1,6 @@
 
+from src.use_cases.generate_portfolio_market_to_market.mark_to_market import MarkToMarket
 from src.use_cases.interfaces.mappers import ColumnMapper
-from src.use_cases.interfaces.mark_to_market import MarkToMarket
 import yfinance as yf
 import pandas_datareader.data as web
 from src.use_cases.interfaces.datatable import DataTable

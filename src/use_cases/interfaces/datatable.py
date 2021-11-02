@@ -66,10 +66,3 @@ class Row(abc.ABC):
     abc.abstractmethod
     def __getitem__(self,column:str)->Any:
         pass
-
-
-class DataTableLoader(abc.ABC):
-
-    @abc.abstractmethod
-    def load(self, path_operations:str, path_types:str)-> DataTable:
-        pass

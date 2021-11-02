@@ -1,6 +1,7 @@
+from src.use_cases.datatable_operations.datatable_loader import DataTableLoader
 from src.use_cases.interfaces.mappers import ColumnMapper
 from src.external.datatable.datatable_pandas import DataTablePandas
-from src.use_cases.interfaces.datatable import DataTable, DataTableLoader
+from src.use_cases.interfaces.datatable import DataTable
 import pandas as pd
 
 class FactoryDataTablePandas(DataTableLoader):

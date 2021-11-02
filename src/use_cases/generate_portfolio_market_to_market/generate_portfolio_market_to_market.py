@@ -1,7 +1,7 @@
 import abc
 from datetime import datetime
+from src.use_cases.generate_portfolio_market_to_market.mark_to_market import MarkToMarket
 from src.use_cases.interfaces.mappers import ColumnMapper
-from src.use_cases.interfaces.mark_to_market import MarkToMarket
 from src.use_cases.interfaces.datatable import DataTable
 
 
