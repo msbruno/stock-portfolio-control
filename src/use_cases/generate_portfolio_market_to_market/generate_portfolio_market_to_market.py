@@ -5,7 +5,7 @@ from src.use_cases.interfaces.mark_to_market import MarkToMarket
 from src.use_cases.interfaces.datatable import DataTable
 
 
-class GeneratePortfolioMarkedToMarket:
+class GeneratePortfolioMarkedToMarket: 
 
     def __init__(self, 
     mark_to_market:MarkToMarket,
@@ -21,7 +21,7 @@ class GeneratePortfolioMarkedToMarket:
 
         for row in result:
             market_value_per_share = self.__mark_to_market.last_market_value(row[self.__column_mapper.ticker_column()])
-            market_value = market_value_per_share * row[self.__column_mapper.quantity_column()]
+            market_value = market_value_per_share * row[self.__column_mapper.acc_shares()]
             result.update(row['index'], self.__column_mapper.market_value_column(), market_value)
         return result
         

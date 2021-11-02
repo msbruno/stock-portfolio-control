@@ -1,7 +1,7 @@
 from src.use_cases.interfaces.mappers import ColumnMapper
 from src.use_cases.process_operations.portfolio_manager import OperationType
 
-DEFAULT_COLUMN_MAPPER_BR = ColumnMapper('data', 'ticker', 'operação', 'qtd', 'pm', 'corretagem', 'moeda', 'valor_mercado')
+DEFAULT_COLUMN_MAPPER_BR = ColumnMapper('data', 'ticker', 'operação', 'qtd', 'pm', 'corretagem', 'cambio', 'valor_mercado')
 DEFAULT_COLUMN_MAPPER_EN =ColumnMapper('date', 'ticker', 'operation', 'qt', 'mp', 'fee', 'currency', 'market_value')
  
 OPERATION_MAPPER = {

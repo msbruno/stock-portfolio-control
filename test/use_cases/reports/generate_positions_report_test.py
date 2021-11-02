@@ -12,13 +12,15 @@ class GeneratePositionsReportTest(unittest.TestCase):
 
     def test(self):
         process_ops = ProcessOperations(DEFAULT_COLUMN_MAPPER_BR)
-        dt_loader = FactoryDataTablePandas(DEFAULT_COLUMN_MAPPER_BR)
+        df_loader = FactoryDataTablePandas(DEFAULT_COLUMN_MAPPER_BR)
         generate_portfolio = GeneratePortfolioMarkedToMarket(MarkToMarketUsingYahoo(DEFAULT_COLUMN_MAPPER_BR), DEFAULT_COLUMN_MAPPER_BR)
-        generate_report = GeneratePositionsReport(generate_portfolio, PrinterPortfolioPositionPlotly())
+        generate_report = GeneratePositionsReport(df_loader, process_ops, generate_portfolio, PrinterPortfolioPositionPlotly())
 
-        #TODO
-        #path_operations = path_resource('portfolio.csv')
-        #path_types = path_resource('portfolio_type.csv')
-        #generate_report.generate_report(path_operations, path_types)
+        
+        path_operations = path_resource('portfolio.csv')
+        path_types = path_resource('portfolio_type.csv')
+        generate_report.generate_report(path_operations, path_types)
+        
+    
         #self.assertEqual(0,0)
     
