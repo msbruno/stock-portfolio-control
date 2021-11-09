@@ -1,6 +1,4 @@
-from src.external.datatable.datatable_loader import FactoryDataTablePandas
-from src.external.datatable.mappers import DEFAULT_COLUMN_MAPPER_EN, OPERATION_MAPPER, DEFAULT_COLUMN_MAPPER_BR
-from src.external.datatable.datatable_pandas import DataTablePandas, RowPandas
+from src.external.datatable.datatable_pandas import DataTablePandas
 import unittest
 import pandas as pd
 

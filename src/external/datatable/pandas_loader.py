@@ -4,7 +4,7 @@ from src.external.datatable.datatable_pandas import DataTablePandas
 from src.use_cases.interfaces.datatable import DataTable
 import pandas as pd
 
-class FactoryDataTablePandas(DataTableLoader):
+class PandasLoader(DataTableLoader):
 
     def __init__(self, column_mapper:ColumnMapper, csv_separator:str=';', data_format:str='%d/%m/%Y', ) -> None:
         self.__column_mapper = column_mapper
