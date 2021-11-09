@@ -11,11 +11,6 @@ class FactoryDataTablePandas(DataTableLoader):
         self.__csv_separator = csv_separator
         self.__data_format = data_format
 
-    def wrap(self, dataframe:pd.DataFrame):
-        result = self.__convert_to_datetime(dataframe)
-        result = self.__order_bydata(result)
-        return DataTablePandas(result)
-
     def load(self, path_operations:str, path_types:str)-> DataTable:
         df_operations_pd = self.__load(path_operations)
         df_types_pd = self.__load(path_types)
