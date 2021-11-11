@@ -6,7 +6,7 @@ import pandas
 from pandas.io import json
 from src.external.datatable.datatable_pandas import DataTablePandas
 from src.external.datatable.mappers import DEFAULT_COLUMN_MAPPER_BR
-from src.use_cases.generate_portfolio_market_to_market.generate_portfolio_market_to_market import GeneratePortfolioMarkedToMarket
+from src.use_cases.generate_portfolio_market_to_market.generate_portfolio_market_to_market import GeneratePortfolio
 from src.use_cases.interfaces.datatable import DataTable
 import plotly.express as px
 
@@ -38,15 +38,15 @@ class GeneratePositionsReport:
 
     def __init__(self, 
         process_ops:ProcessOperations, 
-        generate_portfolio:GeneratePortfolioMarkedToMarket, 
+        generate_portfolio:GeneratePortfolio, 
         printer: PrinterPortfolioPosition):
         self.__process_ops = process_ops
-        self.__generate_portfolio:GeneratePortfolioMarkedToMarket = generate_portfolio
+        self.__generate_portfolio:GeneratePortfolio = generate_portfolio
         self.__portfolio_printer = printer
         
     def generate_report(self,operations_data:DataTable, date:datetime=None):
         processed_operations = self.__process_ops.process_operations(operations_data)
-        portfolio_marked_to_market = self.__generate_portfolio.portfolio_marked_to_market(processed_operations, date)
+        portfolio_marked_to_market = self.__generate_portfolio.generate_portfolio(processed_operations, date)
         column_currency = DEFAULT_COLUMN_MAPPER_BR.currency()
         currencies = portfolio_marked_to_market.unique(column_currency)
 
