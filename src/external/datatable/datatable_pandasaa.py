@@ -8,7 +8,7 @@ from typing import Any, Iterable, List
 import pandas
 
 
-class RowPandas(Row):
+class RowPandasa(Row):
 
     def __init__(self, index, row: pandas.Series):
         self.__index = index
@@ -20,7 +20,7 @@ class RowPandas(Row):
         return  self.__row[column]
 
 
-class DataTablePandas(DataTable):
+class DataTablePandasa(DataTable):
     
     def __init__(self, df: pandas.DataFrame):
         self._df:pandas.DataFrame = df

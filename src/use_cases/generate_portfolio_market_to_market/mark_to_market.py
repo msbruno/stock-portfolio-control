@@ -1,12 +1,12 @@
 import abc
 from datetime import datetime
-from src.use_cases.interfaces.datatable import DataTable
+import pandas as pd
 
 
 class MarkToMarket(abc.ABC):
 
     @abc.abstractmethod
-    def load_market_values(self, dt: DataTable,date:datetime=None)->DataTable:
+    def load_market_values(self, dt:pd.DataFrame,date:datetime=None)->pd.DataFrame:
         pass
     
     @abc.abstractmethod

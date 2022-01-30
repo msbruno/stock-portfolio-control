@@ -21,7 +21,7 @@ class GeneratePortfolioTest(unittest.TestCase):
         generate = GeneratePortfolio(DEFAULT_COLUMN_MAPPER_BR)
         #generate = GeneratePortfolio(MarkToMarketUsingYahoo(DEFAULT_COLUMN_MAPPER_BR), DEFAULT_COLUMN_MAPPER_BR) TODO - Criar teste do yahoo
         data = generate.generate_portfolio(operations(), datetime.strptime("23/09/2021", "%d/%m/%Y"))
-        result = data.to_dict(DEFAULT_COLUMN_MAPPER_BR.ticker())
+        result = to_dict(data, DEFAULT_COLUMN_MAPPER_BR.ticker())
         self.assertEqual(2, result['FB'][DEFAULT_COLUMN_MAPPER_BR.acc_shares()])
         self.assertEqual(1, result['NET'][DEFAULT_COLUMN_MAPPER_BR.acc_shares()])
         
@@ -43,8 +43,13 @@ class MarkPortfolioToMarketTest(unittest.TestCase):
         portfolio = GeneratePortfolio(column_mapper).generate_portfolio(operations(), date)
         data = marker.mark_to_market(portfolio, date)
         market_value_column = column_mapper.market_value()
-        result = data.to_dict(DEFAULT_COLUMN_MAPPER_BR.ticker())
+        result = to_dict(data, DEFAULT_COLUMN_MAPPER_BR.ticker())
         #self.assertEqual(691.92, round(result['FB'][market_value_column],2))
         self.assertEqual(135.67, round(result['NET'][market_value_column],2))
 
 
+def to_dict(df, index_column:str=None)->dict:
+        result = df.copy()
+        if index_column is not None:
+                result = result.set_index(index_column)
+        return result.to_dict('index')

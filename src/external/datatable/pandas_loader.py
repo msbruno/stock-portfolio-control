@@ -1,7 +1,5 @@
 from src.use_cases.datatable_operations.datatable_loader import DataTableLoader
 from src.use_cases.interfaces.mappers import ColumnMapper
-from src.external.datatable.datatable_pandas import DataTablePandas
-from src.use_cases.interfaces.datatable import DataTable
 import pandas as pd
 
 class PandasLoader(DataTableLoader):
@@ -11,13 +9,13 @@ class PandasLoader(DataTableLoader):
         self.__csv_separator = csv_separator
         self.__date_format = data_format
 
-    def load(self, path_operations:str, path_types:str)-> DataTable:
+    def load(self, path_operations:str, path_types:str)-> pd.DataFrame:
         df_operations_pd = self.__load(path_operations)
         df_types_pd = self.__load(path_types)
         result = pd.merge(df_operations_pd, df_types_pd, how="left", on=self.__column_mapper.ticker())
         result = self.__convert_to_datetime(result)
         result = self.__order_bydata(result)
-        return DataTablePandas(result)
+        return result
 
     def __order_bydata(self, df_operations_pd):
         return df_operations_pd.sort_values(self.__column_mapper.date())

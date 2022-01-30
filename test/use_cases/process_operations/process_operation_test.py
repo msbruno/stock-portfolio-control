@@ -1,6 +1,5 @@
 from pandas._libs.tslibs.timestamps import Timestamp
-from src.external.datatable.mappers import DEFAULT_COLUMN_MAPPER_BR, OPERATION_MAPPER
-from src.external.datatable.datatable_pandas import DataTablePandas
+from src.external.datatable.mappers import DEFAULT_COLUMN_MAPPER_BR
 from src.use_cases.process_operations.process_operations import ProcessOperations
 import unittest
 import pandas as pd
@@ -15,10 +14,9 @@ class ProcessOperationTest(unittest.TestCase):
                 ['10/10/2020', 'NET', 'VENDA', 2, 100, 2], 
         ]
         df = pd.DataFrame(data=data, columns=columns)
-        data_table = DataTablePandas(df)
 
         self.sut = ProcessOperations(DEFAULT_COLUMN_MAPPER_BR)
-        self.df_result:DataTablePandas = self.sut.process_operations(data_table)
+        self.df_result = self.sut.process_operations(df)
         self.operations_should_correctly_impact_asset()
         self.dataframe_should_be_uptodate()
 
@@ -56,7 +54,7 @@ class ProcessOperationTest(unittest.TestCase):
         self.verify_row_data(index, profit, acc_value, acc_shares, acc_mean_price, acc_profit)
 
     def verify_row_data(self, index, profit, acc_value, acc_shares, acc_mean_price, acc_profit):
-        _row = self.df_result._df.iloc[index]
+        _row = self.df_result.iloc[index]
         self.assertEqual(profit,_row[DEFAULT_COLUMN_MAPPER_BR.op_profit()])
         self.assertEqual(acc_value,_row[DEFAULT_COLUMN_MAPPER_BR.acc_value()])
         self.assertEqual(acc_shares,_row[DEFAULT_COLUMN_MAPPER_BR.acc_shares()])

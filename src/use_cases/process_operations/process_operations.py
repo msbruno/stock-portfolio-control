@@ -1,6 +1,6 @@
+import pandas as pd
 from src.external.datatable.mappers import OPERATION_MAPPER
 from typing import Any
-from src.use_cases.interfaces.datatable import Row, DataTable
 from src.use_cases.interfaces.mappers import ColumnMapper
 from src.domain.asset import Asset
 from src.domain.portfolio import Portfolio
@@ -13,13 +13,13 @@ class ProcessOperations:
         self.__column_mapper = column_mapper
         self.__operation_mapper = OPERATION_MAPPER
 
-    def process_operations(self, df:DataTable)->DataTable:
-        self.__df:DataTable = df
-        for row in self.__df:
-            self._current_row:Row = row
+    def process_operations(self, df:pd.DataFrame)->pd.DataFrame:
+        self.__df:pd.DataFrame = df
+        for index, row in self.__df.iterrows():
+            self._current_row = row
             operation = self.__current_operation()
             profit = self.__portfolio_mg.execute_operation(row[self.__column_mapper.ticker()], operation)
-            self.__update_dataframe(self._current_row['index'], profit.value())
+            self.__update_dataframe(index, profit.value())
         return self.df()
 
     def df(self):
@@ -40,8 +40,8 @@ class ProcessOperations:
         return OperationData(row[shares], row[mean_price], self.__operation_mapper[row[operation]], row[fees])
 
     def __update_dataframe(self, index:Any, profit:float):
-        self.__df.update(index, self.__column_mapper.op_profit(), profit)
-        self.__df.update(index, self.__column_mapper.acc_value(), self._current_asset().value())
-        self.__df.update(index, self.__column_mapper.acc_shares(), self._current_asset().shares())
-        self.__df.update(index, self.__column_mapper.acc_mean_price(), self._current_asset().mean_price())
-        self.__df.update(index, self.__column_mapper.acc_profit(), self._current_asset().profit())
+        self.__df.at[index, self.__column_mapper.op_profit()] = profit
+        self.__df.at[index, self.__column_mapper.acc_value()] = self._current_asset().value()
+        self.__df.at[index, self.__column_mapper.acc_shares()] = self._current_asset().shares()
+        self.__df.at[index, self.__column_mapper.acc_mean_price()] = self._current_asset().mean_price()
+        self.__df.at[index, self.__column_mapper.acc_profit()] = self._current_asset().profit()

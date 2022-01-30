@@ -22,7 +22,7 @@ class MainTest(unittest.TestCase):
         operations = df_loader.load(path_operations, path_types)
 
         processed_operations = process_ops.process_operations(operations)
-        portfolio_marked_to_market = generate_portfolio.generate_portfolio(processed_operations, "BRL")
+        portfolio_marked_to_market = generate_portfolio.generate_portfolio(processed_operations)
         
         
         

@@ -14,7 +14,7 @@ class GeneratePositionsReportTest(unittest.TestCase):
         process_ops = ProcessOperations(column_mapper)
         df_loader = PandasLoader(column_mapper)
         marker = MarkToMarketUsingYahoo(column_mapper)
-        generate_portfolio = GeneratePortfolio(marker, column_mapper)
+        generate_portfolio = GeneratePortfolio(column_mapper)
 
 
         path_operations = path_resource('portfolio.csv')
@@ -22,8 +22,9 @@ class GeneratePositionsReportTest(unittest.TestCase):
         operations = df_loader.load(path_operations, path_types)
 
         processed_operations = process_ops.process_operations(operations)
-        portfolio_marked_to_market = generate_portfolio.generate_portfolio(processed_operations)
-        portfolio_marked_to_market_with_currency = generate_portfolio.mark_to_currency(portfolio_marked_to_market, "BRL")
+        portfolio = generate_portfolio.generate_portfolio(processed_operations)
+        #portfolio_marked_to_market = 
+        portfolio_marked_to_market_with_currency = generate_portfolio.mark_to_currency(portfolio_marked_to_market)
         
         
 
